@@ -6,7 +6,7 @@ module.exports = {
 	
 	'server'   : 'akuru.herokuapp.com',
 	
-	'stocks'   : [
+	'quotes'   : [
 /*		{ 'name':'AT&T', 'symbol':'T' },
 		{ 'name':'Ares Capital', 'symbol':'ARCC' },
 		{ 'name':'Castellum', 'symbol':'CAST.ST' },

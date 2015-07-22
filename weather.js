@@ -4,9 +4,8 @@ var moment   = require('moment');
 var schedule = require('node-schedule');
 var events   = require('events');
 
-var sprintf  = require('./sprintf');
-var config   = require('./config');
-var random   = require('./random');
+var sprintf  = require('./common/sprintf');
+var random   = require('./common/random');
 
 
 module.exports = function() {

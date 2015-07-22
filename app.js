@@ -5,8 +5,8 @@ var io = require('socket.io')(server);
 var port = process.env.PORT || 5000;
 var schedule = require('node-schedule');
 var config = require('./config');
-var random = require('./random');
-var sprintf = require('./sprintf');
+var random = require('./common/random');
+var sprintf = require('./common/sprintf');
 
 process.env.TZ = config.timezone;
 
@@ -219,14 +219,7 @@ function enableRSS() {
 	var RSS = require('./rss');
 	var rss = new RSS();
 
-	rss.subscribe('SvD', 'http://www.svd.se/?service=rss&type=senastenytt');
-	rss.subscribe('SDS', 'http://www.sydsvenskan.se/rss.xml');
-	rss.subscribe('Di', 'http://www.di.se/rss');
-	rss.subscribe('Google', 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss');
-	
 	rss.on('feed', function(name, date, category, text) {
-		console.log('FEED', name, date, category, text);
-
 		sendText(sprintf('%s - %s - %s', name, category, text));
 	});
 }

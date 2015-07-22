@@ -2,8 +2,31 @@ var schedule = require('node-schedule');
 var util     = require('util');
 var request  = require('request');
 var events   = require('events');
-var config   = require('./config');
-var random   = require('./random');
+var random   = require('./common/random');
+
+
+var config = {
+
+	'rates' : [
+		{ 'name':'USD/SEK', 'symbol':'USDSEK' },
+		{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
+	],
+	
+	
+	'quotes'   : [
+/*		{ 'name':'AT&T', 'symbol':'T' },
+		{ 'name':'Ares Capital', 'symbol':'ARCC' },
+		{ 'name':'Castellum', 'symbol':'CAST.ST' },
+		{ 'name':'H&M', 'symbol':'HM-B.ST' },
+		{ 'name':'NCC', 'symbol':'NCC-B.ST' },
+		{ 'name':'Industrivärlden', 'symbol':'INDU-C.ST' },
+		{ 'name':'Pfizer', 'symbol':'PFE' },
+		{ 'name':'SHB', 'symbol':'SHB-B.ST' },
+		*/
+		{ 'name':'PHI',  'symbol':'PHI.ST' }
+	]
+};
+
 
 module.exports = function() {
 
@@ -72,13 +95,13 @@ module.exports = function() {
 	
 	function fetchQuotes() {
 		
-		var stocks = config.stocks;
+		var quotes = config.quotes;
 		var symbols = [];
 		var names = {};
 		
-		for (var index in stocks) {
-			symbols.push(stocks[index].symbol);
-			names[stocks[index].symbol] = stocks[index].name;
+		for (var index in quotes) {
+			symbols.push(quotes[index].symbol);
+			names[quotes[index].symbol] = quotes[index].name;
 		}		
 	
 		var url = '';

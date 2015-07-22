@@ -4,6 +4,15 @@ var util     = require('util');
 var events   = require('events');
 
 
+var config = {
+	feeds: [
+		{name: 'SvD',    url: 'http://www.svd.se/?service=rss&type=senastenytt'}, 
+		{name: 'SDS',    url: 'http://www.sydsvenskan.se/rss.xml'}, 
+		{name: 'Di',     url: 'http://www.di.se/rss'}, 
+		{name: 'Google', url: 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss'}
+	]
+};
+
 module.exports = function() {
 
 	var self = this;
@@ -12,10 +21,8 @@ module.exports = function() {
 	var _readers = {};
 	var _maxNews = 3;
 	
-	self.subscribe = function(name, url) {
+	function subscribe(name, url) {
 		
-		self.unsubscribe(name);
-
 		var reader = new feedsub(url, {interval: 0, lastDate: new Date()});
 		var lastDate = null;
 		
@@ -53,23 +60,9 @@ module.exports = function() {
 		
 	}
 	
-	self.unsubscribe = function(name) {
-		
-		var reader = _readers[name];
-		
-		if (reader != undefined) {
 
-			delete _readers[name];
-			delete _news[name];
-			
-			if (_readers[name] != undefined)
-				console.log('Reader is still present!');
-			
-		}
-				
-	}
 
-	self.read = function() {
+	function read() {
 		for (var name in _readers) {
 			_readers[name].read();
 		}
@@ -112,8 +105,19 @@ module.exports = function() {
 		});
 	}
 	
-	schedulePolling();
-	scheduleEmitting();
+	function init() {
+		for (var i in config.feeds) {
+			var feed = config.feeds[i];
+			
+			subscribe(feed.name, feed.url);
+		}
+		
+		schedulePolling();
+		scheduleEmitting();
+	}
+	
+	init();
+	
 	
 }
 
