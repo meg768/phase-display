@@ -23,7 +23,7 @@ module.exports = function() {
 		var table = {
 			0:'tornado',
 			1:'tropisk storm',
-			2:'orkan',
+			2:'hurricane',
 			3:'severe thunderstorms',
 			4:'thunderstorms',
 			5:'snöblandat regn',
@@ -77,7 +77,7 @@ module.exports = function() {
 		return table[code] != undefined ? table[code] : sprintf('väderkod %s', code);
 	}
 	
-	function fetch() {
+	self.fetch = function() {
 		request(url, function (error, response, body) {
 			try {
 				if (error)
@@ -124,19 +124,18 @@ module.exports = function() {
 	}
 	
 
-	function init() {
+	self.schedule = function() {
 		var rule = new schedule.RecurrenceRule();		
 		
-		rule.minute = new schedule.Range(0, 59, 13);
-		//rule.hour   = new schedule.Range(7, 23);
+		rule.minute = new schedule.Range(3, 59, 13);
+		rule.hour   = new schedule.Range(7, 23);
 	
 		var job = schedule.scheduleJob(rule, function() {
-			fetch();
+			self.fetch();
 		});
 		
 	}
-	
-	init();
+
 
 
 }

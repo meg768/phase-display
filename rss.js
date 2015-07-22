@@ -2,7 +2,6 @@ var feedsub  = require('feedsub');
 var schedule = require('node-schedule');
 var util     = require('util');
 var events   = require('events');
-var config   = require('./config.js');
 
 
 module.exports = function() {
@@ -13,8 +12,10 @@ module.exports = function() {
 	var _readers = {};
 	var _maxNews = 3;
 	
-	function subscribe(name, url) {
+	self.subscribe = function(name, url) {
 		
+		self.unsubscribe(name);
+
 		var reader = new feedsub(url, {interval: 0, lastDate: new Date()});
 		var lastDate = null;
 		
@@ -52,20 +53,34 @@ module.exports = function() {
 		
 	}
 	
+	self.unsubscribe = function(name) {
+		
+		var reader = _readers[name];
+		
+		if (reader != undefined) {
 
+			delete _readers[name];
+			delete _news[name];
+			
+			if (_readers[name] != undefined)
+				console.log('Reader is still present!');
+			
+		}
+				
+	}
 
-	function read() {
+	self.read = function() {
 		for (var name in _readers) {
 			_readers[name].read();
 		}
 	}
 
-	function scheduleReading() {
+	function schedulePolling() {
 		var rule = new schedule.RecurrenceRule();		
 		rule.minute = new schedule.Range(0, 59, 10);
 	
 		schedule.scheduleJob(rule, function() {
-			read();
+			self.read();
 		});
 		
 	}
@@ -90,19 +105,14 @@ module.exports = function() {
 				console.log("Bringing on the news...");
 				
 				for (var i = 0; i < news.length; i++) {
-					self.emit('feed', news[i].name, news[i].date, news[i].category, news[i].text);
+					if (news[i].date >= limit)
+						self.emit('feed', news[i].name, news[i].date, news[i].category, news[i].text);
 				}
 			}
 		});
 	}
 	
-	for (var i in config.rss) {
-		var item = config.rss[i]; 
-		subscribe(item.name, item.url);
-	}
-	
-	read();
-	scheduleReading();
+	schedulePolling();
 	scheduleEmitting();
 	
 }

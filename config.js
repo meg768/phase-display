@@ -7,7 +7,6 @@ module.exports = {
 	'server'   : 'akuru.herokuapp.com',
 	
 	'stocks'   : [
-		/*
 		{ 'name':'AT&T', 'symbol':'T' },
 		{ 'name':'Ares Capital', 'symbol':'ARCC' },
 		{ 'name':'Castellum', 'symbol':'CAST.ST' },
@@ -16,7 +15,6 @@ module.exports = {
 		{ 'name':'Industrivärlden', 'symbol':'INDU-C.ST' },
 		{ 'name':'Pfizer', 'symbol':'PFE' },
 		{ 'name':'SHB', 'symbol':'SHB-B.ST' },
-		*/
 		{ 'name':'PHI',  'symbol':'PHI.ST' }
 	],
 	
@@ -26,14 +24,21 @@ module.exports = {
 	],
 
 	
-
 	
-	'rss': [
-		{'name': 'SvD', 'url': 'http://www.svd.se/?service=rss&type=senastenytt'},
-		{'name': 'SDS', 'url': 'http://www.sydsvenskan.se/rss.xml'},
-		{'name': 'Di', 'url': 'http://www.di.se/rss'},
-		{'name': 'Google', 'url': 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss'}
+	'twitter'  : {
+		'consumer_key'        : 'RMvVK1wDXgftuFqVwMZA1OmEG',
+		'consumer_secret'     : 'OlS3UoAMA48ZEWT8Ia2cYYTpZZRWNexBVzfhK84i93BXM1wDpK',
+		'access_token'        : '1241291215-fKIUjhl3LVRO9KHukvb23Srcc4rsD9y4J22ErsL',
+		'access_token_secret' : 'lECypLbF3bTOd9r09uydHKUffuSS1zF8DgtTMfaGAHtWP'			
+	},
+	
+	'googleTalk' : {
+		'username' : 'golvettippar@gmail.com',
+		'password' : 'potatismos'
+	},
+	
+	'rss': {
 		
-	]
+	}
 };
 

@@ -8,9 +8,7 @@ var random   = require('./random');
 module.exports = function() {
 
 	var self = this;
-	var _rates = [];
-	var _quotes = [];
-	
+
 	function pluck(items) {
 		var text = '';
 		
@@ -24,7 +22,7 @@ module.exports = function() {
 		return text;
 	}
 
-	function fetchRates() {
+	self.fetchRates = function() {
 		
 		var rates = config.rates;
 		var symbols = [];
@@ -72,7 +70,7 @@ module.exports = function() {
 	}
 	
 	
-	function fetchQuotes() {
+	self.fetchQuotes = function() {
 		
 		var stocks = config.stocks;
 		var symbols = [];
@@ -117,36 +115,22 @@ module.exports = function() {
 		});
 	}
 	
-	function scheduleQuotes() {
+	self.fetch = function() {
+		self.fetchQuotes();
+		self.fetchRates();
+	}
+	
+	self.schedule = function() {
 		var rule = new schedule.RecurrenceRule();		
 		
-		rule.minute = new schedule.Range(0, 59, 1);
-		//rule.hour   = new schedule.Range(7, 23);
+		rule.minute = new schedule.Range(0, 59, 13);
+		rule.hour   = new schedule.Range(7, 23);
 	
 		var job = schedule.scheduleJob(rule, function() {
-			fetchQuotes();
+			self.fetch();
 		});
 		
 	}
-
-	function scheduleRates() {
-		var rule = new schedule.RecurrenceRule();		
-		
-		rule.minute = new schedule.Range(0, 59, 20);
-		//rule.hour   = new schedule.Range(7, 23);
-	
-		var job = schedule.scheduleJob(rule, function() {
-			fetchRates();
-		});
-		
-	}
-
-	function init() {
-		scheduleQuotes();
-		scheduleRates();
-	}	
-
-	init();
 
 	
 }
