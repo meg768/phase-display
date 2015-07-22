@@ -1,0 +1,1 @@
+This is an empty file so that the attachments folder will be created on Heroku
