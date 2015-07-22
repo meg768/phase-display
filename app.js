@@ -145,17 +145,13 @@ function processMail(mail) {
 			text = text.replace(/(\r\n|\n|\r)/gm,' ').trim();	
 
 			if (text.length > 0) {
-				command = 'python';
-				args    = ['run-text.py', '-t', text];
-				options = {cwd: 'python'};
-				
-				io.sockets.emit('spawn', {command:command, args:args, options:options});
+				sendText(text, 'red');
 			}
 		}
 		
 	}
 	
-
+/*
 	if (typeof mail.attachments == 'object') {
 	
 		for (var i in mail.attachments) {
@@ -172,6 +168,7 @@ function processMail(mail) {
 		}
 		
 	}
+*/
 }
 
 
