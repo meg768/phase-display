@@ -29,7 +29,11 @@ function sendText(text, color) {
 	msg.command   = 'python';
 	msg.args      = ['run-text.py', '-t', text];
 	msg.options   = {cwd: 'python'};
-	msg.textcolor = color;
+
+	if (typeof color == 'string') {
+		msg.args.push('-c');
+		msg.args.push(color);
+	}
 
 	console.log('Spawning', msg); 
 	io.sockets.emit('spawn', msg);
@@ -61,7 +65,7 @@ function enablePing() {
 		console.log("Pinging...");
 		
 		var options = {};
-		options.host = "akuru.herokuapp.com";
+		options.host = "phi-display.herokuapp.com";
 		options.path = "/";
 		
 		var request = http.request(options, function(response) {
