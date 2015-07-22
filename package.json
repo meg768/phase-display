@@ -1,0 +1,18 @@
+{
+  "name": "phiab",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "nodemailer": "~1.4.0",
+    "feedsub": "~0.2.8",
+    "node-schedule": "~0.2.9",
+    "request": "~2.60.0",
+    "moment": "~2.10.3"
+  }
+}
