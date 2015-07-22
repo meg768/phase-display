@@ -17,16 +17,6 @@ app.get('/', function (req, response) {
 	response.send("OK");
 });
 
-function sendMessage(event, data) {
-
-	try {
-		console.log('Sending event "%s"', event, data);
-		io.sockets.emit(event, data);
-	}
-	catch (error) {
-		console.log('Sending event "%s" failed.', event, data);			
-	}
-}
 
 
 function sendText(text, color) {
@@ -36,12 +26,13 @@ function sendText(text, color) {
 	
 	var msg = {};
 	
-	msg.type = 'text';
-	msg.message = text;
+	msg.command   = 'python';
+	msg.args      = ['run-text.py', '-t', text];
+	msg.options   = {cwd: 'python'};
 	msg.textcolor = color;
 
-	console.log('Sending text "%s"', text); 
-	io.sockets.emit('message', msg);
+	console.log('Spawning', msg); 
+	io.sockets.emit('spawn', msg);
 }
 
 
@@ -58,21 +49,8 @@ function enableWeather() {
 	
 }
 
-function enableAnimations() {
-	var schedule = require('node-schedule');
 
-	var rule = new schedule.RecurrenceRule();
-	rule.minute = new schedule.Range(0, 59, 5);
-	rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
-	
-	schedule.scheduleJob(rule, function() {
-		sendMessage('message', {
-			type: 'command',
-			name: './run-animation',
-			args: ['-d', 60]
-		});
-	});	
-}
+
 
 function enablePing() {
 	var http = require('http');
@@ -164,51 +142,12 @@ io.on('connection', function (socket) {
 
 
 
-function enableGoogleTalk() {
-	var hangoutsBot = require("hangouts-bot");
-	var bot = new hangoutsBot("golvettippar@gmail.com", "potatismos");
-	
-	console.log('Starting Google Talk...');
-	
-	bot.on('online', function() {
-	
-		// Make sure it doesn't time out
-		bot.connection.connection.socket.setTimeout(0);
-		bot.connection.connection.socket.setKeepAlive(true, 10000);
-
-		sendText('Google Talk online...');	
-	});
-	
-	bot.on('message', function(from, message) {
-
-		message = message.replace(new RegExp('”', 'g'), '"');
-		
-		try {
-			sendMessage('message', JSON.parse(message));			
-		}
-		catch (error) {
-			message = message.replace(new RegExp('"', 'g'), '”');
-	
-			var text = {}; 
-	
-			console.log(from, message);
-			
-			sendText(message);			
-			bot.sendMessage(from, sprintf('OK, %s', message));
-			
-		}
-
-
-	});		
-}
 
 
 
 enableRSS();
-enableGoogleTalk();
 enableFinance();
 enablePing();
-enableAnimations();
 enableWeather();
 
 
