@@ -251,5 +251,6 @@ enableRSS();
 enableFinance();
 enablePing();
 enableWeather();
+enableListener();
 
 
