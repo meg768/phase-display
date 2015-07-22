@@ -22,7 +22,7 @@ module.exports = function() {
 		return text;
 	}
 
-	self.fetchRates = function() {
+	function fetchRates() {
 		
 		var rates = config.rates;
 		var symbols = [];
@@ -70,7 +70,7 @@ module.exports = function() {
 	}
 	
 	
-	self.fetchQuotes = function() {
+	function fetchQuotes() {
 		
 		var stocks = config.stocks;
 		var symbols = [];
@@ -115,22 +115,33 @@ module.exports = function() {
 		});
 	}
 	
-	self.fetch = function() {
-		self.fetchQuotes();
-		self.fetchRates();
+
+	function scheduleQuotes() {
+		var rule = new schedule.RecurrenceRule();		
+		
+		rule.minute = new schedule.Range(0, 59, 2);
+		rule.hour   = new schedule.Range(7, 23);
+	
+		var job = schedule.scheduleJob(rule, function() {
+			fetchQuotes();
+		});
+		
 	}
 	
-	self.schedule = function() {
+	function scheduleRates() {
 		var rule = new schedule.RecurrenceRule();		
 		
 		rule.minute = new schedule.Range(0, 59, 13);
 		rule.hour   = new schedule.Range(7, 23);
 	
 		var job = schedule.scheduleJob(rule, function() {
-			self.fetch();
+			fetchRates();
 		});
 		
 	}
+	
+	scheduleQuotes();
+	scheduleRates();
 
 	
 }

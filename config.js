@@ -7,7 +7,7 @@ module.exports = {
 	'server'   : 'akuru.herokuapp.com',
 	
 	'stocks'   : [
-		{ 'name':'AT&T', 'symbol':'T' },
+/*		{ 'name':'AT&T', 'symbol':'T' },
 		{ 'name':'Ares Capital', 'symbol':'ARCC' },
 		{ 'name':'Castellum', 'symbol':'CAST.ST' },
 		{ 'name':'H&M', 'symbol':'HM-B.ST' },
@@ -15,6 +15,7 @@ module.exports = {
 		{ 'name':'Industrivärlden', 'symbol':'INDU-C.ST' },
 		{ 'name':'Pfizer', 'symbol':'PFE' },
 		{ 'name':'SHB', 'symbol':'SHB-B.ST' },
+		*/
 		{ 'name':'PHI',  'symbol':'PHI.ST' }
 	],
 	

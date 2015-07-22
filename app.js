@@ -68,7 +68,7 @@ function enablePing() {
 		options.path = "/";
 		
 		var request = http.request(options, function(response) {
-			
+			console.log('Ping OK.');
 		});
 		
 		request.end();
@@ -86,20 +86,19 @@ function enablePing() {
 function enableFinance() {
 	
 	var Finance = require('./finance');
-	var query = new Finance();
+	var finance = new Finance();
 	
-	query.on('quote', function(name, symbol, change) {
+	finance.on('quote', function(name, symbol, change) {
 		if (change >= 0)
 			sendText(sprintf('%s +%.2f', name, change), 'blue');
 		else
 			sendText(sprintf('%s %0.2f', name, change), 'red');
 	});
 
-	query.on('rate', function(name, symbol, value) {
-		sendText(sprintf('%s %.2f', name, value), 'white');
+	finance.on('rate', function(name, symbol, value) {
+		sendText(sprintf('%s %.2f', name, value), 'green');
 	});
 		
-	query.schedule();
 }
 
 
