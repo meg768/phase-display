@@ -18,7 +18,6 @@ app.get('/', function (req, response) {
 });
 
 
-
 function sendText(text, color) {
 	
 	if (color == undefined)
@@ -117,6 +116,105 @@ function enableWeather() {
 	query.fetch();
 	query.schedule();
 	
+}
+
+
+function processMail(mail) {
+
+	var command = undefined;
+	var args    = [];
+	var options = undefined;
+
+	if (mail.text == undefined)
+		mail.text = '';
+		
+	if (mail.subject == undefined)
+		mail.subject = '';
+		
+	{
+		{
+			var text = mail.subject;
+			
+			if (mail.text.length > 0) {
+				if (text.length > 0)
+					text += ' - ';
+
+				text += mail.text;
+			}
+
+			text = text.replace(/(\r\n|\n|\r)/gm,' ').trim();	
+
+			if (text.length > 0) {
+				command = 'python';
+				args    = ['run-text.py', '-t', text];
+				options = {cwd: 'python'};
+				
+				io.sockets.emit('spawn', {command:command, args:args, options:options});
+			}
+		}
+		
+	}
+	
+
+	if (typeof mail.attachments == 'object') {
+	
+		for (var i in mail.attachments) {
+			var attachment = mail.attachments[i];
+			
+			if (typeof attachment.path == 'string' && typeof attachment.contentType == 'string' && attachment.contentType == 'image/png') {
+				command = 'python';
+				args    = ['run-image.py', '-i', attachment.path];
+				options = {cwd: 'python'};
+				
+				io.sockets.emit('spawn', {command:command, args:args, options:options});
+				
+			} 
+		}
+		
+	}
+}
+
+
+function enableListener() {
+	var MailListener = require("mail-listener2");
+
+	var listener = new MailListener({
+	  username: "phaseholographic@gmail.com",
+	  password: "P0tatismos",
+	  host: "imap.gmail.com",
+	  port: 993, // imap port 
+	  tls: true,
+	  tlsOptions: { rejectUnauthorized: false },
+	  mailbox: "INBOX", // mailbox to monitor 
+	  //searchFilter: ["UNSEEN", "FLAGGED"], // the search filter being used after an IDLE notification has been retrieved 
+	  markSeen: true, // all fetched email willbe marked as seen and not fetched next time 
+	  fetchUnreadOnStart: true, // use it only if you want to get all unread email on lib start. Default is `false`, 
+	  mailParserOptions: {streamAttachments: false}, // options to be passed to mailParser lib. 
+	  attachments: true, // download attachments as they are encountered to the project directory 
+	  attachmentOptions: { directory: "attachments/" } // specify a download directory for attachments 
+	});
+	 
+	listener.start();
+	 
+	listener.on("server:connected", function(){
+		processMail({subject: 'phaseholographic@gmail.com connected', text: ''});
+	});
+	 
+	listener.on("server:disconnected", function(){
+	});
+	 
+	listener.on("error", function(err){
+		console.log(err);
+	});
+	 
+	listener.on("mail", function(mail, seqno, attributes){
+		processMail(mail);
+	});
+	 
+	listener.on("attachment", function(attachment) {
+	});
+	
+	return listener;
 }
 
 
