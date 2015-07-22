@@ -73,7 +73,7 @@ module.exports = function() {
 		rule.minute = new schedule.Range(0, 59, 10);
 	
 		schedule.scheduleJob(rule, function() {
-			self.read();
+			read();
 		});
 		
 	}
