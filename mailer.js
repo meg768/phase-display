@@ -40,7 +40,8 @@ module.exports = function() {
 		    subject: subject,
 		    text: text
 		};
-		
+		console.log('sending', subject, text);
+		return;
 		transport.sendMail(options, function(error, info){
 		    if (error){
 		        return console.log(error);
