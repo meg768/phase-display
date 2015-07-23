@@ -129,8 +129,6 @@ module.exports = function() {
 		rule.minute = new schedule.Range(3, 59, 13);
 		rule.hour   = new schedule.Range(7, 23);
 	
-		fetch();
-		
 		var job = schedule.scheduleJob(rule, function() {
 			fetch();
 		});

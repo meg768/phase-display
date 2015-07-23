@@ -1,11 +1,12 @@
 
-var app = require('express')();
-var server = require('http').Server(app);
+var app      = require('express')();
+var server   = require('http').Server(app);
 var schedule = require('node-schedule');
-var config = require('./config');
-var random = require('./common/random');
-var sprintf = require('./common/sprintf');
-var display = require('./common/display.js');
+
+var config   = require('./config');
+var random   = require('./common/random');
+var sprintf  = require('./common/sprintf');
+var display  = require('./common/display.js');
 
 process.env.TZ = config.timezone;
 
@@ -15,43 +16,6 @@ display.init(server);
 app.get('/', function (req, response) {
 	response.send("OK");
 });
-
-/*
-function sendBeep() {
-	
-	var msg = {};
-	
-	msg.command   = 'omxplayer';
-	msg.args      = ['--no-keys', '--no-osd', 'audio/beep3.mp3'];
-	msg.options   = {cwd: 'python'};
-
-	console.log('Spawning', msg); 
-	io.sockets.emit('spawn', msg);
-}
-
-function sendText(text, color) {
-	
-	if (color == undefined)
-		color = 'red';
-	
-	var msg = {};
-	
-	msg.command   = 'python';
-	msg.args      = ['run-text.py', '-t', text];
-	msg.options   = {cwd: 'python'};
-
-	if (typeof color == 'string') {
-		msg.args.push('-c');
-		msg.args.push(color);
-	}
-
-	console.log('Spawning', msg); 
-	io.sockets.emit('spawn', msg);
-}
-
-*/
-
-
 
 
 
@@ -85,7 +49,7 @@ function enablePing() {
 
 function enableFinance() {
 	
-	var Finance = require('./finance');
+	var Finance = require('./modules/finance');
 	var finance = new Finance();
 	
 	finance.on('quote', function(name, symbol, change) {
@@ -105,7 +69,7 @@ function enableFinance() {
 
 
 function enableWeather() {
-	var Weather = require('./weather');
+	var Weather = require('./modules/weather');
 	var weather = new Weather();
 	
 	weather.on('forecast', function(item) {
@@ -215,24 +179,13 @@ function enableListener() {
 
 function enableRSS() {
 
-	var RSS = require('./rss');
+	var RSS = require('./modules/rss');
 	var rss = new RSS();
 
 	rss.on('feed', function(name, date, category, text) {
 		display.text(sprintf('%s - %s - %s', name, category, text));
 	});
 }
-
-/*
-io.on('connection', function (socket) {
-
-	var now = new Date();
-	sendText(sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes()));
-});
-
-*/
-
-
 
 
 enableRSS();
