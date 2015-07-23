@@ -76,7 +76,7 @@ module.exports = function() {
 		return table[code] != undefined ? table[code] : sprintf('väderkod %s', code);
 	}
 	
-	self.fetch = function() {
+	function fetch() {
 		request(url, function (error, response, body) {
 			try {
 				if (error)
@@ -123,21 +123,22 @@ module.exports = function() {
 	}
 	
 
-	self.schedule = function() {
+	function schedule() {
 		var rule = new schedule.RecurrenceRule();		
 		
 		rule.minute = new schedule.Range(3, 59, 13);
-		//rule.hour   = new schedule.Range(7, 23);
+		rule.hour   = new schedule.Range(7, 23);
 	
 		var job = schedule.scheduleJob(rule, function() {
-			self.fetch();
+			fetch();
 		});
 		
 	}
-
-
-
+	
+	fetch();
+	schedule();
 }
+
 
 util.inherits(module.exports, events.EventEmitter);
 

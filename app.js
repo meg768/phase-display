@@ -50,18 +50,7 @@ function sendText(text, color) {
 }
 
 */
-function enableWeather() {
-	var Weather = require('./weather');
-	var query = new Weather();
-	
-	query.on('forecast', function(item) {
-		display.text(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
-	});
-	
-	query.fetch();
-	query.schedule();
-	
-}
+
 
 
 
@@ -117,14 +106,11 @@ function enableFinance() {
 
 function enableWeather() {
 	var Weather = require('./weather');
-	var query = new Weather();
+	var weather = new Weather();
 	
-	query.on('forecast', function(item) {
+	weather.on('forecast', function(item) {
 		display.text(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
 	});
-	
-	query.fetch();
-	query.schedule();
 	
 }
 
@@ -145,7 +131,7 @@ function processMail(mail) {
 		
 	{
 		if (mail.headers && mail.headers['x-priority'] == 'high')
-			sendBeep();
+			display.beep();
 
 		var text = mail.subject + '\n' + mail.text;
 		
