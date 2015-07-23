@@ -66,6 +66,15 @@ function enableFinance() {
 }
 
 
+function enableMail() {
+	
+	var Mail = require('./modules/mail.js');
+	
+	new Mail('phaseholographic@gmail.com', 'P0tatismos');
+	//new Mail('phaseholographic@gmail.com', 'P0tatismos');
+	
+}
+
 
 
 function enableWeather() {
@@ -77,7 +86,7 @@ function enableWeather() {
 	});
 	
 }
-
+/*
 
 function processMail(mail) {
 
@@ -93,44 +102,22 @@ function processMail(mail) {
 	if (mail.subject == undefined)
 		mail.subject = '';
 		
-	{
-		if (mail.headers && mail.headers['x-priority'] == 'high')
-			display.beep();
+	if (mail.headers && mail.headers['x-priority'] == 'high')
+		display.beep();
 
-		var text = mail.subject + '\n' + mail.text;
-		
-		text = text.replace(/(\r\n|\n|\r)/gm, '\n');
-		text = text.replace('\t',' ');
-		
-		var texts = text.split('\n');
-		
-		for (var i in texts) {
-			var text = texts[i].trim();
-			 
-			if (text.length > 0)
-				display.text(text, 'red');							
-		}
+	var text = mail.subject + '\n' + mail.text;
 	
+	text = text.replace(/(\r\n|\n|\r)/gm, '\n');
+	text = text.replace('\t',' ');
+	
+	var texts = text.split('\n');
+	
+	for (var i in texts) {
+		var text = texts[i].trim();
+		 
+		if (text.length > 0)
+			display.text(text, 'red');							
 	}
-	
-/*
-	if (typeof mail.attachments == 'object') {
-	
-		for (var i in mail.attachments) {
-			var attachment = mail.attachments[i];
-			
-			if (typeof attachment.path == 'string' && typeof attachment.contentType == 'string' && attachment.contentType == 'image/png') {
-				command = 'python';
-				args    = ['run-image.py', '-i', attachment.path];
-				options = {cwd: 'python'};
-				
-				io.sockets.emit('spawn', {command:command, args:args, options:options});
-				
-			} 
-		}
-		
-	}
-*/
 }
 
 
@@ -175,7 +162,7 @@ function enableListener() {
 	
 	return listener;
 }
-
+*/
 
 function enableRSS() {
 
@@ -192,6 +179,8 @@ enableRSS();
 enableFinance();
 enablePing();
 enableWeather();
-enableListener();
+enableMail();
+
+console.log('OK!');
 
 
