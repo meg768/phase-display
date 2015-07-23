@@ -4,7 +4,7 @@ module.exports = {
 
 	'timezone' : 'Europe/Stockholm',
 	
-	'server'   : 'akuru.herokuapp.com',
+	'server'   : 'phi-display.herokuapp.com',
 	
 	'quotes'   : [
 /*		{ 'name':'AT&T', 'symbol':'T' },

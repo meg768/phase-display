@@ -145,25 +145,23 @@ function processMail(mail) {
 		mail.subject = '';
 		
 	{
-		{
-			var text = mail.subject;
-			
-			if (mail.text.length > 0) {
-				if (text.length > 0)
-					text += ' - ';
+		if (mail.headers && mail.headers['x-priority'] == 'high')
+			sendBeep();
 
-				text += mail.text;
-			}
-
-			text = text.replace(/(\r\n|\n|\r)/gm,' ').trim();	
-
-			if (text.length > 0) {
-				if (mail.headers && mail.headers['x-priority'] == 'high')
-					sendBeep();
-				sendText(text, 'red');
-			}
-		}
+		var text = mail.subject + '\n' + mail.text;
 		
+		text = text.replace(/(\r\n|\n|\r)/gm, '\n');
+		text = text.replace('\t',' ');
+		
+		var texts = text.split('\n');
+		
+		for (var i in texts) {
+			var text = texts[i].trim();
+			 
+			if (text.length > 0)
+				sendText(text, 'red');							
+		}
+	
 	}
 	
 /*
