@@ -1,4 +1,3 @@
-var display = require('../common/display.js');
 
 module.exports = function(host, path) {
 
@@ -9,6 +8,7 @@ module.exports = function(host, path) {
 	function init(url) {
 		var http = require('http');
 		var schedule = require('node-schedule');
+		var display = require('../common/display.js');
 	
 		function ping() {
 		
@@ -20,6 +20,7 @@ module.exports = function(host, path) {
 			
 			var request = http.request(options, function(response) {
 				console.log('Ping OK.');
+				display.text('Ping OK');
 			});
 			
 			request.end();
