@@ -136,6 +136,8 @@ function processMail(mail) {
 	var args    = [];
 	var options = undefined;
 
+	console.log(mail);
+	
 	if (mail.text == undefined)
 		mail.text = '';
 		
