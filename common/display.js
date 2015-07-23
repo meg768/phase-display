@@ -4,6 +4,15 @@ var sprintf = require('./sprintf');
 var _io = null;
 
 
+function translateColor(color) {
+	
+	
+	var colors = [];
+	if (color == 'random') {
+		
+	} 
+}
+
 module.exports.text = function(text, color) {
 	
 	if (color == undefined)
