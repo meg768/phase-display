@@ -11,7 +11,6 @@ module.exports = function(email, password, host, port) {
 	if (port == undefined)
 		port = 993;	
 
-
 	function processMail(mail) {
 	
 		var command = undefined;
@@ -45,23 +44,23 @@ module.exports = function(email, password, host, port) {
 	}
 	
 
-	function enableListener() {
+	function init() {
 		var MailListener = require("mail-listener2");
 
 		var listener = new MailListener({
-		  username: email,
-		  password: password,
-		  host: host,
-		  port: port, 
-		  tls: true,
-		  tlsOptions: { rejectUnauthorized: false },
-		  mailbox: "INBOX", // mailbox to monitor 
-		  //searchFilter: ["UNSEEN", "FLAGGED"], // the search filter being used after an IDLE notification has been retrieved 
-		  markSeen: true, // all fetched email willbe marked as seen and not fetched next time 
-		  fetchUnreadOnStart: true, // use it only if you want to get all unread email on lib start. Default is `false`, 
-		  mailParserOptions: {streamAttachments: true}, // options to be passed to mailParser lib. 
-		  attachments: true, // download attachments as they are encountered to the project directory 
-		  attachmentOptions: { directory: "attachments/" } // specify a download directory for attachments 
+			username: email,
+			password: password,
+			host: host,
+			port: port, 
+			tls: true,
+			tlsOptions: { rejectUnauthorized: false },
+			mailbox: "INBOX", // mailbox to monitor 
+			//searchFilter: ["UNSEEN", "FLAGGED"], // the search filter being used after an IDLE notification has been retrieved 
+			markSeen: true, // all fetched email willbe marked as seen and not fetched next time 
+			fetchUnreadOnStart: true, // use it only if you want to get all unread email on lib start. Default is `false`, 
+			mailParserOptions: {streamAttachments: true}, // options to be passed to mailParser lib. 
+			attachments: true, // download attachments as they are encountered to the project directory 
+			attachmentOptions: { directory: "attachments/" } // specify a download directory for attachments 
 		});
 		 
 		listener.start();
@@ -86,6 +85,7 @@ module.exports = function(email, password, host, port) {
 		
 	}
 
+	init();
 
 };
 

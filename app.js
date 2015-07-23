@@ -175,10 +175,10 @@ function enableRSS() {
 }
 
 
-enableRSS();
-enableFinance();
-enablePing();
-enableWeather();
+//enableRSS();
+//enableFinance();
+//enablePing();
+//enableWeather();
 enableMail();
 
 console.log('OK!');
