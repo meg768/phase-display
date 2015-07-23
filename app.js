@@ -158,7 +158,8 @@ function processMail(mail) {
 			text = text.replace(/(\r\n|\n|\r)/gm,' ').trim();	
 
 			if (text.length > 0) {
-				sendBeep();
+				if (mail.headers && mail.headers['x-priority'] == 'high')
+					sendBeep();
 				sendText(text, 'red');
 			}
 		}
