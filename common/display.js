@@ -20,7 +20,7 @@ function translateColor(color) {
 module.exports.text = function(text, color) {
 
 	if (color == undefined)
-		color = 'red';
+		color = 'rgb(255, 0, 0)';
 	
 	text = text.replace(/(\r\n|\n|\r)/gm, '\n');
 	text = text.replace('\t',' ');
