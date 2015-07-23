@@ -1,23 +1,28 @@
 
 var app      = require('express')();
 var server   = require('http').Server(app);
-var schedule = require('node-schedule');
 
 var config   = require('./config');
-var random   = require('./common/random');
 var sprintf  = require('./common/sprintf');
 var display  = require('./common/display.js');
 
+
+// Set the time zone according to config settings
 process.env.TZ = config.timezone;
 
+// Listen on port 5000
 server.listen(process.env.PORT || 5000);
+
+
+// We need to initialize the display...
 display.init(server);
 
+// Any request at the root level will return OK
 app.get('/', function (req, response) {
 	response.send("OK");
 });
 
-
+// Make sure Heroku doesn't put our process to sleep...
 function enablePing() {
 
 	var Ping = require('./modules/ping.js');
@@ -52,8 +57,6 @@ function enableMail() {
 	
 }
 
-
-
 function enableWeather() {
 	var Weather = require('./modules/weather');
 	var weather = new Weather();
@@ -63,7 +66,6 @@ function enableWeather() {
 	});
 	
 }
-
 
 function enableRSS() {
 
