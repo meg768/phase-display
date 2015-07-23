@@ -1,23 +1,22 @@
 
 var app = require('express')();
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var port = process.env.PORT || 5000;
 var schedule = require('node-schedule');
 var config = require('./config');
 var random = require('./common/random');
 var sprintf = require('./common/sprintf');
+var display = require('./common/display.js');
 
 process.env.TZ = config.timezone;
 
-server.listen(port);
-
+server.listen(process.env.PORT || 5000);
+display.init(server);
 
 app.get('/', function (req, response) {
 	response.send("OK");
 });
 
-
+/*
 function sendBeep() {
 	
 	var msg = {};
@@ -50,13 +49,13 @@ function sendText(text, color) {
 	io.sockets.emit('spawn', msg);
 }
 
-
+*/
 function enableWeather() {
 	var Weather = require('./weather');
 	var query = new Weather();
 	
 	query.on('forecast', function(item) {
-		sendText(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
+		display.text(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
 	});
 	
 	query.fetch();
@@ -102,13 +101,13 @@ function enableFinance() {
 	
 	finance.on('quote', function(name, symbol, change) {
 		if (change >= 0)
-			sendText(sprintf('%s +%.2f', name, change), 'blue');
+			display.text(sprintf('%s +%.2f', name, change), 'blue');
 		else
-			sendText(sprintf('%s %0.2f', name, change), 'red');
+			display.text(sprintf('%s %0.2f', name, change), 'red');
 	});
 
 	finance.on('rate', function(name, symbol, value) {
-		sendText(sprintf('%s %.2f', name, value), 'green');
+		display.text(sprintf('%s %.2f', name, value), 'green');
 	});
 		
 }
@@ -121,7 +120,7 @@ function enableWeather() {
 	var query = new Weather();
 	
 	query.on('forecast', function(item) {
-		sendText(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
+		display.text(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
 	});
 	
 	query.fetch();
@@ -159,7 +158,7 @@ function processMail(mail) {
 			var text = texts[i].trim();
 			 
 			if (text.length > 0)
-				sendText(text, 'red');							
+				display.text(text, 'red');							
 		}
 	
 	}
@@ -234,18 +233,18 @@ function enableRSS() {
 	var rss = new RSS();
 
 	rss.on('feed', function(name, date, category, text) {
-		sendText(sprintf('%s - %s - %s', name, category, text));
+		display.text(sprintf('%s - %s - %s', name, category, text));
 	});
 }
 
-
+/*
 io.on('connection', function (socket) {
 
 	var now = new Date();
 	sendText(sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes()));
 });
 
-
+*/
 
 
 
