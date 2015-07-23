@@ -72,7 +72,7 @@ function enableMail() {
 	
 	new Mail('phaseholographic@gmail.com', 'P0tatismos');
 	new Mail('magnus.egelberg@gmail.com', 'P0tatismos');
-	//new Mail('phaseholographic@gmail.com', 'P0tatismos');
+	new Mail('magnus@egelberg.se', 'P0tatismos', 'pop3.egelberg.se', 110);
 	
 }
 
@@ -87,83 +87,7 @@ function enableWeather() {
 	});
 	
 }
-/*
 
-function processMail(mail) {
-
-	var command = undefined;
-	var args    = [];
-	var options = undefined;
-
-	console.log(mail);
-	
-	if (mail.text == undefined)
-		mail.text = '';
-		
-	if (mail.subject == undefined)
-		mail.subject = '';
-		
-	if (mail.headers && mail.headers['x-priority'] == 'high')
-		display.beep();
-
-	var text = mail.subject + '\n' + mail.text;
-	
-	text = text.replace(/(\r\n|\n|\r)/gm, '\n');
-	text = text.replace('\t',' ');
-	
-	var texts = text.split('\n');
-	
-	for (var i in texts) {
-		var text = texts[i].trim();
-		 
-		if (text.length > 0)
-			display.text(text, 'red');							
-	}
-}
-
-
-function enableListener() {
-	var MailListener = require("mail-listener2");
-
-	var listener = new MailListener({
-	  username: "phaseholographic@gmail.com",
-	  password: "P0tatismos",
-	  host: "imap.gmail.com",
-	  port: 993, // imap port 
-	  tls: true,
-	  tlsOptions: { rejectUnauthorized: false },
-	  mailbox: "INBOX", // mailbox to monitor 
-	  //searchFilter: ["UNSEEN", "FLAGGED"], // the search filter being used after an IDLE notification has been retrieved 
-	  markSeen: true, // all fetched email willbe marked as seen and not fetched next time 
-	  fetchUnreadOnStart: true, // use it only if you want to get all unread email on lib start. Default is `false`, 
-	  mailParserOptions: {streamAttachments: false}, // options to be passed to mailParser lib. 
-	  attachments: true, // download attachments as they are encountered to the project directory 
-	  attachmentOptions: { directory: "attachments/" } // specify a download directory for attachments 
-	});
-	 
-	listener.start();
-	 
-	listener.on("server:connected", function(){
-		processMail({subject: 'phaseholographic@gmail.com connected', text: ''});
-	});
-	 
-	listener.on("server:disconnected", function(){
-	});
-	 
-	listener.on("error", function(err){
-		console.log(err);
-	});
-	 
-	listener.on("mail", function(mail, seqno, attributes){
-		processMail(mail);
-	});
-	 
-	listener.on("attachment", function(attachment) {
-	});
-	
-	return listener;
-}
-*/
 
 function enableRSS() {
 
@@ -176,10 +100,10 @@ function enableRSS() {
 }
 
 
-//enableRSS();
-//enableFinance();
-//enablePing();
-//enableWeather();
+enableRSS();
+enableFinance();
+enablePing();
+enableWeather();
 enableMail();
 
 console.log('OK!');
