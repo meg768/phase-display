@@ -25,7 +25,7 @@ module.exports.text = function(text, color) {
 	text = text.replace(/(\r\n|\n|\r)/gm, '\n');
 	text = text.replace('\t',' ');
 	
-	var texts = text.split('\n');
+	var texts = text.split('\n').trim();
 	
 	for (var i in texts) {
 		var text = texts[i].trim();
