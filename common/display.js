@@ -1,3 +1,4 @@
+var sprintf = require('./sprintf');
 
 
 var _io = null;
