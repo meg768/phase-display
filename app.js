@@ -71,7 +71,7 @@ function enableMail() {
 	var Mail = require('./modules/mail.js');
 	
 	new Mail('phaseholographic@gmail.com', 'P0tatismos');
-	new Mail('magnus.egelberg@gmail.com', 'zP0tatismosz');
+	new Mail('magnus.egelberg@gmail.com', 'P0tatismos');
 	//new Mail('phaseholographic@gmail.com', 'P0tatismos');
 	
 }
