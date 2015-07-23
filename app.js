@@ -18,6 +18,18 @@ app.get('/', function (req, response) {
 });
 
 
+function sendBeep() {
+	
+	var msg = {};
+	
+	msg.command   = 'omxplayer';
+	msg.args      = ['--no-keys', '--no-osd', 'audio/beep3.mp3'];
+	msg.options   = {cwd: 'python'};
+
+	console.log('Spawning', msg); 
+	io.sockets.emit('spawn', msg);
+}
+
 function sendText(text, color) {
 	
 	if (color == undefined)
@@ -144,6 +156,7 @@ function processMail(mail) {
 			text = text.replace(/(\r\n|\n|\r)/gm,' ').trim();	
 
 			if (text.length > 0) {
+				sendBeep();
 				sendText(text, 'red');
 			}
 		}
