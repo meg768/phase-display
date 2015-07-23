@@ -18,38 +18,10 @@ app.get('/', function (req, response) {
 });
 
 
-
 function enablePing() {
 
 	var Ping = require('./modules/ping.js');
-
 	var ping = new Ping('phi-display.herokuapp.com');
-	/*
-	var http = require('http');
-	var schedule = require('node-schedule');
-
-	function ping() {
-	
-		console.log("Pinging...");
-		
-		var options = {};
-		options.host = "phi-display.herokuapp.com";
-		options.path = "/";
-		
-		var request = http.request(options, function(response) {
-			console.log('Ping OK.');
-		});
-		
-		request.end();
-	}
-	
-	var rule = new schedule.RecurrenceRule();
-	rule.minute = [0,15,30,45];
-	
-	schedule.scheduleJob(rule, function() {
-		ping();	
-	});
-	*/
 }
 
 
@@ -71,14 +43,12 @@ function enableFinance() {
 		
 }
 
-
 function enableMail() {
 	
 	var Mail = require('./modules/mail.js');
 	
 	new Mail('phaseholographic@gmail.com', 'P0tatismos');
 	new Mail('magnus.egelberg@gmail.com', 'P0tatismos');
-	//new Mail('magnus@egelberg.se', 'P0tatismos', 'pop3.egelberg.se', 110);
 	
 }
 
@@ -106,11 +76,11 @@ function enableRSS() {
 }
 
 
-//enableRSS();
-//enableFinance();
+enableRSS();
+enableFinance();
 enablePing();
-//enableWeather();
-//enableMail();
+enableWeather();
+enableMail();
 
 console.log('OK!');
 

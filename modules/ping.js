@@ -20,7 +20,6 @@ module.exports = function(host, path) {
 			
 			var request = http.request(options, function(response) {
 				console.log('Ping OK.');
-				display.text('Ping OK');
 			});
 			
 			request.end();
@@ -32,7 +31,6 @@ module.exports = function(host, path) {
 		
 		schedule.scheduleJob(rule, function() {
 			ping();	
-			display.text('Ping!!');
 		});
 	}
 	
