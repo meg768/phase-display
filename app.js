@@ -37,13 +37,13 @@ function enableFinance() {
 	
 	finance.on('quote', function(name, symbol, price, change, volume) {
 		if (change >= 0)
-			display.text(sprintf('%s %.2f (+%.2f) %d', name, price, change, volume), 'blue');
+			display.text(sprintf('%s %.2f (+%.2f) %d', name, price, change, volume), 'rgb(0,255,0)');
 		else
-			display.text(sprintf('%s %.2f (%0.2f) %d', name, price, change, volume), 'red');
+			display.text(sprintf('%s %.2f (%0.2f) %d', name, price, change, volume), 'rgb(255,0,0)');
 	});
 
 	finance.on('rate', function(name, symbol, value) {
-		display.text(sprintf('%s %.2f', name, value), 'magenta');
+		display.text(sprintf('%s %.2f', name, value), 'rgb(0,0,255)');
 	});
 		
 }

@@ -55,7 +55,7 @@ module.exports = function(email, password, host, port) {
 		listener.start();
 		 
 		listener.on("server:connected", function() {
-			display.text(sprintf('Listening for incoming mail for %s...', email), 'green');
+			display.text(sprintf('Listening for incoming mail for %s...', email), 'rgb(0,255,0)');
 		});
 		 
 		listener.on("server:disconnected", function(){
