@@ -124,7 +124,7 @@ module.exports = function() {
 	
 					for (var index in quotes) {
 						var quote = quotes[index];
-						self.emit('quote', names[quote.symbol], quote.symbol, parseFloat(quote.PercentChange));
+						self.emit('quote', names[quote.symbol], quote.symbol, parseFloat(quote.LastTradePriceOnly), parseFloat(quote.PercentChange), parseInt(quote.Volume));
 					}
 				}
 				else

@@ -35,15 +35,15 @@ function enableFinance() {
 	var Finance = require('./modules/finance');
 	var finance = new Finance();
 	
-	finance.on('quote', function(name, symbol, change) {
+	finance.on('quote', function(name, symbol, price, change, volume) {
 		if (change >= 0)
-			display.text(sprintf('%s +%.2f', name, change), 'blue');
+			display.text(sprintf('%s %.2f (+%.2f) %d', name, price, change, volume), 'blue');
 		else
-			display.text(sprintf('%s %0.2f', name, change), 'red');
+			display.text(sprintf('%s %.2f (%0.2f) %d', name, price, change, volume), 'red');
 	});
 
 	finance.on('rate', function(name, symbol, value) {
-		display.text(sprintf('%s %.2f', name, value), 'green');
+		display.text(sprintf('%s %.2f', name, value), 'magenta');
 	});
 		
 }
@@ -53,7 +53,7 @@ function enableMail() {
 	var Mail = require('./modules/mail.js');
 	
 	new Mail('phaseholographic@gmail.com', 'P0tatismos');
-	new Mail('magnus.egelberg@gmail.com', 'P0tatismos');
+//	new Mail('magnus.egelberg@gmail.com', 'P0tatismos');
 	
 }
 
