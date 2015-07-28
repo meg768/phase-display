@@ -50,6 +50,20 @@ module.exports.text = function(text, color) {
 	}
 	
 }
+
+
+module.exports.image = function(image) {
+	
+	var msg = {};
+	
+	msg.command   = 'python';
+	msg.args      = ['run-image.py', '-', image];
+	msg.options   = {cwd: 'python'};
+
+	console.log('Spawning', msg); 
+	_io.sockets.emit('spawn', msg);
+}
+
 	
 module.exports.beep = function() {
 	
@@ -71,6 +85,8 @@ module.exports.init = function(server) {
 	_io.on('connection', function (socket) {
 	
 		var now = new Date();
+		
+		module.exports.image('images/phiab-logo.png');
 		module.exports.text(sprintf("%02d:%02d", now.getHours(), now.getMinutes()));
 	});
 	
