@@ -17,7 +17,7 @@ function translateColor(color) {
 }
 
 
-module.exports.text = function(text, color) {
+module.exports.text = function(text, color, priority) {
 
 	if (color == undefined)
 		color = 'rgb(255, 0, 0)';
@@ -36,6 +36,9 @@ module.exports.text = function(text, color) {
 			msg.command   = 'python';
 			msg.args      = ['run-text.py', '-t', text];
 			msg.options   = {cwd: 'python'};
+
+			if (typeof priority == 'string')
+				msg.priority = priority;
 		
 			if (typeof color == 'string') {
 				msg.args.push('-c');
@@ -52,7 +55,7 @@ module.exports.text = function(text, color) {
 }
 
 
-module.exports.image = function(image) {
+module.exports.image = function(image, priority) {
 	
 	var msg = {};
 	
@@ -60,6 +63,9 @@ module.exports.image = function(image) {
 	msg.args      = ['run-image.py', '-i', image];
 	msg.options   = {cwd: 'python'};
 
+	if (typeof priority == 'string')
+		msg.priority = priority;
+		
 	console.log('Spawning', msg); 
 	_io.sockets.emit('spawn', msg);
 }

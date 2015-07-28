@@ -1,6 +1,7 @@
 
 var app      = require('express')();
 var server   = require('http').Server(app);
+var schedule = require('node-schedule');
 
 var config   = require('./config');
 var sprintf  = require('./common/sprintf');
@@ -78,11 +79,24 @@ function enableRSS() {
 }
 
 
+function enableIdle() {
+	var rule    = new schedule.RecurrenceRule();
+	rule.hour   = new schedule.Range(7, 23, 1);
+	rule.second = new schedule.Range(0, 59, 10);
+	
+	schedule.scheduleJob(rule, function() {
+		display.image('images/phiab-logo.png', 'low');
+	});	
+}
+
+
+
 enableRSS();
 enableFinance();
 enablePing();
 enableWeather();
 enableMail();
+enableIdle();
 
 console.log('OK!');
 

@@ -26,8 +26,8 @@ module.exports = function(host, path) {
 		}
 		
 		var rule = new schedule.RecurrenceRule();
+		rule.hour   = new schedule.Range(7, 23, 1);
 		rule.minute = [0,15,30,45];
-		rule.minute = new schedule.Range(0, 59, 1);
 		
 		schedule.scheduleJob(rule, function() {
 			ping();	
