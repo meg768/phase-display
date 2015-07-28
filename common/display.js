@@ -57,7 +57,7 @@ module.exports.image = function(image) {
 	var msg = {};
 	
 	msg.command   = 'python';
-	msg.args      = ['run-image.py', '-', image];
+	msg.args      = ['run-image.py', '-i', image];
 	msg.options   = {cwd: 'python'};
 
 	console.log('Spawning', msg); 
