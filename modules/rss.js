@@ -81,14 +81,14 @@ module.exports = function() {
 	function scheduleEmitting() {
 		var rule = new schedule.RecurrenceRule();		
 		rule.minute = new schedule.Range(0, 59, 15);
-		//rule.hour   = new schedule.Range(7, 23);
+		rule.hour   = new schedule.Range(7, 23);
 	
 		schedule.scheduleJob(rule, function() {
 		
 			var news = [];
 			var now = new Date();
 			
-			// Don't display too ole articles
+			// Don't display too old articles
 			var limit = new Date(now.getTime() - 8 * 60 * 60 * 1000);
 
 			for (var name in _news)

@@ -33,8 +33,20 @@ function enablePing() {
 
 function enableFinance() {
 	
+	var config = {
+	
+		'rates' : [
+			{ 'name':'USD/SEK', 'symbol':'USDSEK' },
+			{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
+		],
+		
+		'quotes' : [
+			{ 'name':'PHI',  'symbol':'PHI.ST' }
+		]
+	};
+	
 	var Finance = require('./modules/finance');
-	var finance = new Finance();
+	var finance = new Finance(config);
 	
 	finance.on('quote', function(name, symbol, price, change, volume) {
 		if (change >= 0)
@@ -54,7 +66,6 @@ function enableMail() {
 	var Mail = require('./modules/mail.js');
 	
 	new Mail('phaseholographic@gmail.com', 'P0tatismos');
-//	new Mail('magnus.egelberg@gmail.com', 'P0tatismos');
 	
 }
 
