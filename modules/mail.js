@@ -55,9 +55,11 @@ module.exports = function(email, password, host, port) {
 		listener.start();
 		 
 		listener.on("server:connected", function() {
+			console.log('Mail connected...');
 		});
 		 
 		listener.on("server:disconnected", function(){
+			console.log('Mail disconnected...');
 		});
 		 
 		listener.on("error", function(err){
@@ -65,6 +67,7 @@ module.exports = function(email, password, host, port) {
 		});
 		 
 		listener.on("mail", function(mail, seqno, attributes){
+			console.log('Incoming mail...');
 			processMail(mail);
 		});
 		 
