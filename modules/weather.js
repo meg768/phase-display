@@ -77,6 +77,8 @@ module.exports = function(config) {
 	}
 	
 	self.fetch = function() {
+	
+		console.log('Fetching weather...');
 		request(url, function (error, response, body) {
 			try {
 				if (error)
