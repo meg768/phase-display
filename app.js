@@ -96,7 +96,7 @@ function enableFinance() {
 				batch.text(sprintf('%.2f', latestQuote.price), options);
 
 				options.color = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
-				batch.text(sprintf('%s%.2f%%', latestQuote.change >= 0 ? '+' : '-', latestQuote.change), options)
+				batch.text(sprintf('%s%.1f%%', latestQuote.change >= 0 ? '+' : '', latestQuote.change), options)
 
 				options.color = 'blue';
 				batch.text(sprintf('%.2f MSEK', (latestQuote.volume * latestQuote.price) / 1000000.0), options);
