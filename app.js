@@ -84,7 +84,7 @@ function enableFinance() {
 		schedule.scheduleJob(rule, function() {
 			var batch = new display.Batch();
 			
-			batch.image('images/phiab.png', {priority:'low'});
+			batch.image('images/phiab-logo.png', {priority:'low'});
 	
 			if (latestQuote != undefined) {
 				var options = {};
@@ -93,7 +93,7 @@ function enableFinance() {
 				options.size     = 26;
 				
 				options.color = 'white';
-				batch.text(sprintf('Phase %.2f', latestQuote.price), options);
+				batch.text(sprintf('%.2f', latestQuote.price), options);
 
 				options.color = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
 				batch.text(sprintf('%s%.2f%%', latestQuote.change >= 0 ? '+' : '-', latestQuote.change), options)
