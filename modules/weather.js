@@ -127,11 +127,11 @@ module.exports = function(config) {
 		if (typeof config.schedule == 'object') {
 			var rule = new schedule.RecurrenceRule();		
 			
-			if (config.minute != undefined)
-				rule.minute = config.minute;
+			if (config.schedule.minute != undefined)
+				rule.minute = config.schedule.minute;
 	
-			if (config.hour != undefined)
-				rule.hour = config.hour;
+			if (config.schedule.hour != undefined)
+				rule.hour = config.schedule.hour;
 		
 			var job = schedule.scheduleJob(rule, function() {
 				self.fetch();
