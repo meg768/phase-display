@@ -89,6 +89,7 @@ function enableFinance() {
 				options.color    = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
 				options.font     = 'Century-Gothic-Bold-Italic';
 				options.priority = 'low';
+				options.size     = 24;
 				
 				if (latestQuote.change >= 0)
 					display.text(sprintf('%s %.2f (+%.2f) %d', latestQuote.name, latestQuote.price, latestQuote.change, latestQuote.volume), options);

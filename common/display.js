@@ -58,6 +58,11 @@ module.exports.text = function(text, options) {
 					msg.args.push(options.font);
 				}
 
+				if (typeof options.size == 'number' || typeof options.size == 'string') {
+					msg.args.push('-s');
+					msg.args.push(sprintf('%s', parseInt(options.size)));
+				}
+
 				if (typeof options.priority == 'string')
 					msg.priority = options.priority;
 			}
