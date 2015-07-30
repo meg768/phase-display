@@ -82,7 +82,6 @@ function enableFinance() {
 		rule.second = new schedule.Range(0, 59, 10);
 		
 		schedule.scheduleJob(rule, function() {
-			display.image('images/phiab-logo.png', {priority:'low'});
 	
 			if (latestQuote != undefined) {
 				var options = {};
