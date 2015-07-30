@@ -2,7 +2,7 @@ var sprintf = require('./sprintf');
 
 
 var _io = null;
-
+var _messages = [];
 
 function translateColor(color) {
 	
@@ -16,6 +16,19 @@ function translateColor(color) {
 	return color;
 }
 
+
+module.exports.send = function() {
+	
+	if (_messages.length > 0) {
+		console.log('Sending!!', _messages);
+		_io.sockets.emit('spawn', _messages);
+		
+	}
+	
+	
+	_messages = [];
+	
+}
 
 module.exports.text = function(text, options) {
 
@@ -49,9 +62,9 @@ module.exports.text = function(text, options) {
 					msg.priority = options.priority;
 			}
 		
-		
-			console.log('Spawning', msg); 
-			_io.sockets.emit('spawn', msg);
+			_messages.push(msg);
+			//console.log('Spawning', msg); 
+			//_io.sockets.emit('spawn', msg);
 			
 			
 		}
@@ -73,9 +86,10 @@ module.exports.image = function(image, options) {
 			msg.priority = options.priority;
 		
 	}
-		
-	console.log('Spawning', msg); 
-	_io.sockets.emit('spawn', msg);
+	
+	_messages.push(msg);	
+	//console.log('Spawning', msg); 
+	//_io.sockets.emit('spawn', msg);
 }
 
 	
