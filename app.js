@@ -92,9 +92,9 @@ function enableFinance() {
 				options.size     = 24;
 				
 				if (latestQuote.change >= 0)
-					display.text(sprintf('%s %.2f (+%.2f) %d', latestQuote.name, latestQuote.price, latestQuote.change, latestQuote.volume), options);
+					display.text(sprintf('%.2f (+%.2f) %d', latestQuote.price, latestQuote.change, latestQuote.volume), options);
 				else
-					display.text(sprintf('%s %.2f (%0.2f) %d', latestQuote.name, latestQuote.price, latestQuote.change, latestQuote.volume), options);
+					display.text(sprintf('%.2f (%0.2f) %d', latestQuote.price, latestQuote.change, latestQuote.volume), options);
 				
 			}
 			display.send();
