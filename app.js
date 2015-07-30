@@ -174,7 +174,7 @@ function enableWeather() {
 	var config = {
 		schedule: {
 			hour:   new schedule.Range(7, 23),
-			minute: new schedule.Range(5, 59, 20)
+			minute: [0, 10, 20, 30, 40, 50]
 		}
 	};
 	

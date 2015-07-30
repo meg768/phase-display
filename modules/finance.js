@@ -2,8 +2,6 @@ var schedule = require('node-schedule');
 var util     = require('util');
 var request  = require('request');
 var events   = require('events');
-var random   = require('../common/random');
-
 
 
 module.exports = function(config) {
