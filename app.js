@@ -171,7 +171,6 @@ function enableMail() {
 
 function enableWeather() {
 
-	return;
 	var config = {
 		schedule: {
 			hour:   new schedule.Range(7, 23),
