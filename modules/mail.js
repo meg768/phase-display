@@ -1,15 +1,24 @@
 
 var display = require('../common/display.js');
 var sprintf = require('../common/sprintf.js');
+var events  = require('events');
+var util    = require('util');
 
-module.exports = function(email, password, host, port) {
 
-	if (host == undefined)
-		host = 'imap.gmail.com';
+
+var Mail = module.exports = function(config) {
+
+
+	var self = this;
 	
+	if (config == undefined)
+		config = {};
+
+	if (config.host == undefined)
+		config.host = 'imap.gmail.com';
 	
-	if (port == undefined)
-		port = 993;	
+	if (config.port == undefined)
+		config.port = 993;	
 
 	function processMail(mail) {
 	
@@ -37,10 +46,10 @@ module.exports = function(email, password, host, port) {
 		var MailListener = require("mail-listener2");
 
 		var listener = new MailListener({
-			username: email,
-			password: password,
-			host: host,
-			port: port, 
+			username: config.email,
+			password: config.password,
+			host: config.host,
+			port: config.port, 
 			tls: true,
 			tlsOptions: { rejectUnauthorized: false },
 			mailbox: "INBOX", // mailbox to monitor 
@@ -63,12 +72,12 @@ module.exports = function(email, password, host, port) {
 		});
 		 
 		listener.on("error", function(err){
-			console.log(err);
+			console.log('Mail error', err);
 		});
 		 
 		listener.on("mail", function(mail, seqno, attributes){
 			console.log('Incoming mail...');
-			processMail(mail);
+			self.emit('mail', mail);
 		});
 		 
 		listener.on("attachment", function(attachment) {
@@ -81,3 +90,4 @@ module.exports = function(email, password, host, port) {
 };
 
 
+util.inherits(module.exports, events.EventEmitter);

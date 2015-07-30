@@ -8,7 +8,7 @@ var sprintf  = require('../common/sprintf');
 var random   = require('../common/random');
 
 
-module.exports = function() {
+module.exports = function(config) {
 	
 	var self = this;
 	var url  = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22Lund%2C%20Sweden%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';
@@ -76,7 +76,7 @@ module.exports = function() {
 		return table[code] != undefined ? table[code] : sprintf('väderkod %s', code);
 	}
 	
-	function fetch() {
+	self.fetch = function() {
 		request(url, function (error, response, body) {
 			try {
 				if (error)
@@ -124,14 +124,20 @@ module.exports = function() {
 	
 
 	function init() {
-		var rule = new schedule.RecurrenceRule();		
-		
-		rule.minute = new schedule.Range(3, 59, 13);
-		rule.hour   = new schedule.Range(7, 23);
+		if (typeof config.schedule == 'object') {
+			var rule = new schedule.RecurrenceRule();		
+			
+			if (config.minute != undefined)
+				rule.minute = config.minute;
 	
-		var job = schedule.scheduleJob(rule, function() {
-			fetch();
-		});
+			if (config.hour != undefined)
+				rule.hour = config.hour;
+		
+			var job = schedule.scheduleJob(rule, function() {
+				self.fetch();
+			});
+			
+		}
 		
 	}
 

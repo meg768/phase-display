@@ -4,16 +4,7 @@ var util     = require('util');
 var events   = require('events');
 
 
-var config = {
-	feeds: [
-		{name: 'SvD',    url: 'http://www.svd.se/?service=rss&type=senastenytt'}, 
-		{name: 'SDS',    url: 'http://www.sydsvenskan.se/rss.xml'}, 
-		{name: 'Di',     url: 'http://www.di.se/rss'}, 
-		{name: 'Google', url: 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss'}
-	]
-};
-
-module.exports = function() {
+var RSS = module.exports = function(config) {
 
 	var self = this;
 	
@@ -72,6 +63,8 @@ module.exports = function() {
 		var rule = new schedule.RecurrenceRule();		
 		rule.minute = new schedule.Range(0, 59, 10);
 	
+		read();
+		
 		schedule.scheduleJob(rule, function() {
 			read();
 		});
@@ -80,9 +73,13 @@ module.exports = function() {
 	
 	function scheduleEmitting() {
 		var rule = new schedule.RecurrenceRule();		
-		rule.minute = new schedule.Range(0, 59, 15);
-		rule.hour   = new schedule.Range(7, 23);
-	
+		
+		if (config.schedule.hour != undefined)
+			rule.hour = config.schedule.hour;
+
+		if (config.schedule.minute != undefined)
+			rule.minute = config.schedule.minute;
+		
 		schedule.scheduleJob(rule, function() {
 		
 			var news = [];
@@ -99,7 +96,7 @@ module.exports = function() {
 				
 				for (var i = 0; i < news.length; i++) {
 					if (news[i].date >= limit)
-						self.emit('feed', news[i].name, news[i].date, news[i].category, news[i].text);
+						self.emit('feed', news[i]);
 				}
 			}
 		});

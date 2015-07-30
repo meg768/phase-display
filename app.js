@@ -26,8 +26,17 @@ app.get('/', function (req, response) {
 // Make sure Heroku doesn't put our process to sleep...
 function enablePing() {
 
+	var config = {
+		host: 'phi-display.herokuapp.com',
+		path: '/',
+		schedule: {
+			hour   : new schedule.Range(7, 23),
+			minute : new schedule.Range(0, 59, 15)
+		}
+	};
+	
 	var Ping = require('./modules/ping.js');
-	var ping = new Ping('phi-display.herokuapp.com');
+	var ping = new Ping(config);
 }
 
 
@@ -99,7 +108,7 @@ function enableFinance() {
 				batch.text(sprintf('%s%.1f%%', latestQuote.change >= 0 ? '+' : '', latestQuote.change), options)
 
 				options.color = 'blue';
-				batch.text(sprintf('%.2f MSEK', (latestQuote.volume * latestQuote.price) / 1000000.0), options);
+				batch.text(sprintf('%.1f MSEK', (latestQuote.volume * latestQuote.price) / 1000000.0), options);
 
 			}
 			
@@ -128,53 +137,83 @@ function enableFinance() {
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+
 function enableMail() {
 	
-	var Mail = require('./modules/mail.js');
+	var config = {
+		email    : 'phaseholographic@gmail.com',
+		password : 'P0tatismos'
+		
+	};
 	
-	new Mail('phaseholographic@gmail.com', 'P0tatismos');
+	var Mail = require('./modules/mail.js');	
+	var mail = new Mail(config);
 	
+	mail.on('mail', function(mail) {
+		if (mail.text == undefined)
+			mail.text = '';
+			
+		if (mail.subject == undefined)
+			mail.subject = '';
+			
+		if (mail.headers && mail.headers['x-priority'] == 'high')
+			display.play('beep3.mp3');
+	
+		display.text(mail.subject + '\n' + mail.text);		
+	});
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
 function enableWeather() {
+
+	var config = {
+		schedule: {
+			hour:   new schedule.Range(7, 23),
+			minute: new schedule.Range(5, 59, 20)
+		}
+	};
+	
 	var Weather = require('./modules/weather');
-	var weather = new Weather();
+	var weather = new Weather(config);
 	
 	weather.on('forecast', function(item) {
-		display.text(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low),{color:'blue'});
+		display.text(sprintf('%s - %s %d°C(%d°C)', item.day, item.condition, item.high, item.low),{color:'blue'});
 	});
 	
 }
 
 function enableRSS() {
 
-	var RSS = require('./modules/rss');
-	var rss = new RSS();
+	var config = {
+		feeds: [
+			{name: 'SvD',    url: 'http://www.svd.se/?service=rss&type=senastenytt'}, 
+			{name: 'SDS',    url: 'http://www.sydsvenskan.se/rss.xml'}, 
+			{name: 'Di',     url: 'http://www.di.se/rss'}, 
+			{name: 'Google', url: 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss'}
+		],
+		schedule: {
+			hour:   new schedule.Range(7, 23),
+			minute: new schedule.Range(0, 59, 20)
+		}
 
-	rss.on('feed', function(name, date, category, text) {
-		display.text(sprintf('%s - %s - %s', name, category, text));
+	};
+
+	var RSS = require('./modules/rss');
+	var rss = new RSS(config);
+
+	rss.on('feed', function(rss) {
+		display.text(sprintf('%s - %s - %s', rss.name, rss.category, rss.text));
 	});
 }
 
-
-function enableIdle() {
-	var rule    = new schedule.RecurrenceRule();
-	rule.hour   = new schedule.Range(7, 23, 1);
-	rule.second = new schedule.Range(0, 59, 10);
-	
-	schedule.scheduleJob(rule, function() {
-		display.image('images/phiab-logo.png', {priority:'low'});
-	});	
-}
-
-
-
-//enableRSS();
+enableWeather();
 enableFinance();
-//enablePing();
-//enableWeather();
-//enableMail();
-//enableIdle();
+enableMail();
+enablePing();
+enableRSS();
 
 console.log('OK!');
 
