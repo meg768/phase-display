@@ -33,6 +33,8 @@ function enablePing() {
 
 function enableFinance() {
 	
+	var latestQuote = undefined;
+	
 	var config = {
 	
 		'rates' : [
@@ -41,24 +43,82 @@ function enableFinance() {
 		],
 		
 		'quotes' : [
-			{ 'name':'PHI',  'symbol':'PHI.ST' }
+			{ 'name':'Phase',  'symbol':'PHI.ST' }
 		]
 	};
 	
 	var Finance = require('./modules/finance');
 	var finance = new Finance(config);
+
+	function scheduleQuotes() {
+		var rule = new schedule.RecurrenceRule();		
+		
+		rule.minute = new schedule.Range(0, 59, 2);
+		rule.hour   = new schedule.Range(7, 23);
 	
+		finance.fetchQuotes();
+		
+		var job = schedule.scheduleJob(rule, function() {
+			finance.fetchQuotes();
+		});
+		
+	}
+	
+	function scheduleRates() {
+		var rule = new schedule.RecurrenceRule();		
+		
+		rule.minute = new schedule.Range(0, 59, 13);
+		rule.hour   = new schedule.Range(7, 23);
+	
+		var job = schedule.scheduleJob(rule, function() {
+			finance.fetchRates();
+		});
+		
+	}
+
+	function scheduleDisplayQuotes() {
+		var rule    = new schedule.RecurrenceRule();
+		rule.hour   = new schedule.Range(7, 23, 1);
+		rule.second = new schedule.Range(0, 59, 10);
+		
+		schedule.scheduleJob(rule, function() {
+			display.image('images/phiab-logo.png', {priority:'low'});
+	
+			if (latestQuote != undefined) {
+				var options = {};
+				options.color    = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
+				options.font     = 'Century-Gothic-Bold-Italic';
+				options.priority = 'low';
+				
+				if (latestQuote.change >= 0)
+					display.text(sprintf('%s %.2f (+%.2f) %d', latestQuote.name, latestQuote.price, latestQuote.change, latestQuote.volume), options);
+				else
+					display.text(sprintf('%s %.2f (%0.2f) %d', latestQuote.name, latestQuote.price, latestQuote.change, latestQuote.volume), options);
+				
+			}
+	
+		});			
+		
+	}	
+
 	finance.on('quote', function(name, symbol, price, change, volume) {
-		if (change >= 0)
-			display.text(sprintf('%s %.2f (+%.2f) %d', name, price, change, volume), 'rgb(0,255,0)');
-		else
-			display.text(sprintf('%s %.2f (%0.2f) %d', name, price, change, volume), 'rgb(255,0,0)');
+		latestQuote = {
+			name:name,
+			symbol:symbol,
+			price:price,
+			volume:volume,
+			change:change
+		}
 	});
 
 	finance.on('rate', function(name, symbol, value) {
-		display.text(sprintf('%s %.2f', name, value), 'rgb(0,0,255)');
+		display.text(sprintf('%s %.2f', name, value), {color:'rgb(0,0,255)'});
 	});
-		
+
+	scheduleQuotes();
+	scheduleRates();
+	scheduleDisplayQuotes();
+
 }
 
 function enableMail() {
@@ -74,7 +134,7 @@ function enableWeather() {
 	var weather = new Weather();
 	
 	weather.on('forecast', function(item) {
-		display.text(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
+		display.text(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low),{color:'blue'});
 	});
 	
 }
@@ -96,18 +156,18 @@ function enableIdle() {
 	rule.second = new schedule.Range(0, 59, 10);
 	
 	schedule.scheduleJob(rule, function() {
-		display.image('images/phiab-logo.png', 'low');
+		display.image('images/phiab-logo.png', {priority:'low'});
 	});	
 }
 
 
 
-enableRSS();
+//enableRSS();
 enableFinance();
-enablePing();
-enableWeather();
-enableMail();
-enableIdle();
+//enablePing();
+//enableWeather();
+//enableMail();
+//enableIdle();
 
 console.log('OK!');
 

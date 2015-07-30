@@ -23,7 +23,7 @@ module.exports = function(config) {
 		return text;
 	}
 
-	function fetchRates() {
+	self.fetchRates = function() {
 		
 		var rates = config.rates;
 		var symbols = [];
@@ -71,7 +71,7 @@ module.exports = function(config) {
 	}
 	
 	
-	function fetchQuotes() {
+	self.fetchQuotes = function() {
 		
 		var quotes = config.quotes;
 		var symbols = [];
@@ -116,33 +116,6 @@ module.exports = function(config) {
 		});
 	}
 	
-
-	function scheduleQuotes() {
-		var rule = new schedule.RecurrenceRule();		
-		
-		rule.minute = new schedule.Range(0, 59, 2);
-		rule.hour   = new schedule.Range(7, 23);
-	
-		var job = schedule.scheduleJob(rule, function() {
-			fetchQuotes();
-		});
-		
-	}
-	
-	function scheduleRates() {
-		var rule = new schedule.RecurrenceRule();		
-		
-		rule.minute = new schedule.Range(0, 59, 13);
-		rule.hour   = new schedule.Range(7, 23);
-	
-		var job = schedule.scheduleJob(rule, function() {
-			fetchRates();
-		});
-		
-	}
-	
-	scheduleQuotes();
-	scheduleRates();
 
 	
 }

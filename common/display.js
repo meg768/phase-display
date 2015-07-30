@@ -17,11 +17,8 @@ function translateColor(color) {
 }
 
 
-module.exports.text = function(text, color, priority) {
+module.exports.text = function(text, options) {
 
-	if (color == undefined)
-		color = 'rgb(255, 0, 0)';
-	
 	text = text.replace(/(\r\n|\n|\r)/gm, '\n');
 	text = text.replace('\t',' ');
 	
@@ -37,13 +34,21 @@ module.exports.text = function(text, color, priority) {
 			msg.args      = ['run-text.py', '-t', text];
 			msg.options   = {cwd: 'python'};
 
-			if (typeof priority == 'string')
-				msg.priority = priority;
-		
-			if (typeof color == 'string') {
-				msg.args.push('-c');
-				msg.args.push(color);
+			if (typeof options == 'object') {
+				if (typeof options.color == 'string') {
+					msg.args.push('-c');
+					msg.args.push(options.color);
+				}
+				
+				if (typeof options.font == 'string') {
+					msg.args.push('-f');
+					msg.args.push(options.font);
+				}
+
+				if (typeof options.priority == 'string')
+					msg.priority = options.priority;
 			}
+		
 		
 			console.log('Spawning', msg); 
 			_io.sockets.emit('spawn', msg);
@@ -55,7 +60,7 @@ module.exports.text = function(text, color, priority) {
 }
 
 
-module.exports.image = function(image, priority) {
+module.exports.image = function(image, options) {
 	
 	var msg = {};
 	
@@ -63,8 +68,11 @@ module.exports.image = function(image, priority) {
 	msg.args      = ['run-image.py', '-i', image];
 	msg.options   = {cwd: 'python'};
 
-	if (typeof priority == 'string')
-		msg.priority = priority;
+	if (typeof options == 'object') {
+		if (typeof options.priority == 'string')
+			msg.priority = options.priority;
+		
+	}
 		
 	console.log('Spawning', msg); 
 	_io.sockets.emit('spawn', msg);
