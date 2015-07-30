@@ -82,22 +82,28 @@ function enableFinance() {
 		rule.second = new schedule.Range(0, 59, 10);
 		
 		schedule.scheduleJob(rule, function() {
-			display.image('images/phiab-logo.png', {priority:'low'});
+			var batch = new display.Batch();
+			
+			batch.image('images/phiab.png', {priority:'low'});
 	
 			if (latestQuote != undefined) {
 				var options = {};
-				options.color    = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
 				options.font     = 'Century-Gothic-Bold-Italic';
 				options.priority = 'low';
-				options.size     = 24;
+				options.size     = 26;
 				
-				if (latestQuote.change >= 0)
-					display.text(sprintf('%.2f (+%.2f) %d', latestQuote.price, latestQuote.change, latestQuote.volume), options);
-				else
-					display.text(sprintf('%.2f (%0.2f) %d', latestQuote.price, latestQuote.change, latestQuote.volume), options);
-				
+				options.color = 'white';
+				batch.text(sprintf('Phase %.2f', latestQuote.price), options);
+
+				options.color = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
+				batch.text(sprintf('%s%.2f', latestQuote.change >= 0 ? '' : '-', latestQuote.change), options)
+
+				options.color = 'white';
+				batch.text(sprintf('Omsättning %d', latestQuote.volume), options);
+
 			}
-			display.send();
+			
+			batch.send();
 		});			
 		
 	}	
