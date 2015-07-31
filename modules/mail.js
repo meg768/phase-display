@@ -1,5 +1,5 @@
 
-var display = require('../common/display.js');
+var matrix  = require('../common/matrix.js');
 var sprintf = require('../common/sprintf.js');
 var events  = require('events');
 var util    = require('util');
@@ -25,7 +25,8 @@ var Mail = module.exports = function(config) {
 		var command = undefined;
 		var args    = [];
 		var options = undefined;
-	
+		var display = new matrix.Display();
+		
 		console.log(mail);
 		
 		if (mail.text == undefined)
@@ -38,7 +39,7 @@ var Mail = module.exports = function(config) {
 			display.beep();
 	
 		display.text(mail.subject + '\n' + mail.text);
-
+		display.send();
 	}
 	
 

@@ -5,7 +5,7 @@ var schedule = require('node-schedule');
 
 var config   = require('./config');
 var sprintf  = require('./common/sprintf');
-var display  = require('./common/display.js');
+var matrix   = require('./common/matrix.js');
 
 
 // Set the time zone according to config settings
@@ -16,7 +16,7 @@ server.listen(process.env.PORT || 5000);
 
 
 // We need to initialize the display...
-display.init(server);
+matrix.init(server);
 
 // Any request at the root level will return OK
 app.get('/', function (req, response) {
@@ -94,9 +94,9 @@ function enableFinance() {
 		rule.second = new schedule.Range(0, 59, 10);
 		
 		schedule.scheduleJob(rule, function() {
-			var batch = new display.Batch();
+			var display = new matrix.Display();
 			
-			batch.image('images/phiab-logo.png');
+			display.image('images/phiab-logo.png');
 	
 			if (latestQuote != undefined) {
 				var options = {};
@@ -104,17 +104,17 @@ function enableFinance() {
 				options.size     = 26;
 				
 				options.color = 'white';
-				batch.text(sprintf('%.2f', latestQuote.price), options);
+				display.text(sprintf('%.2f', latestQuote.price), options);
 
 				options.color = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
-				batch.text(sprintf('%s%.1f%%', latestQuote.change >= 0 ? '+' : '', latestQuote.change), options)
+				display.text(sprintf('%s%.1f%%', latestQuote.change >= 0 ? '+' : '', latestQuote.change), options)
 
 				options.color = 'blue';
-				batch.text(sprintf('%.1f MSEK', (latestQuote.volume * latestQuote.price) / 1000000.0), options);
+				display.text(sprintf('%.1f MSEK', (latestQuote.volume * latestQuote.price) / 1000000.0), options);
 
 			}
 			
-			batch.send({priority:'low'});
+			display.send({priority:'low'});
 		});			
 		
 	}	
@@ -130,7 +130,7 @@ function enableFinance() {
 	});
 
 	finance.on('rate', function(name, symbol, value) {
-		display.text(sprintf('%s %.2f', name, value), {color:'rgb(0,0,255)'});
+		matrix.text(sprintf('%s %.2f', name, value), {color:'rgb(0,0,255)'});
 	});
 
 	scheduleQuotes();
@@ -160,9 +160,9 @@ function enableMail() {
 			mail.subject = '';
 			
 		if (mail.headers && mail.headers['x-priority'] == 'high')
-			display.play('beep3.mp3');
+			matrix.play('beep3.mp3');
 	
-		display.text(mail.subject + '\n' + mail.text);		
+		matrix.text(mail.subject + '\n' + mail.text);		
 	});
 }
 
@@ -173,7 +173,7 @@ function enableWeather() {
 	var config = {
 		schedule: {
 			hour:   new schedule.Range(7, 23),
-			minute: new schedule.Range(0, 59) //[0, 10, 20, 30, 40, 50]
+			minute: [0, 10, 20, 30, 40, 50]
 		}
 	};
 	
@@ -181,10 +181,10 @@ function enableWeather() {
 	var weather = new Weather(config);
 	
 	weather.on('forecast', function(item) {
-		var batch = new display.Batch();
-		batch.text(item.day, {color:'white'});
-		batch.text(sprintf('%s %d(%d) °C', item.condition, item.high, item.low),{color:'blue'});
-		batch.send();
+		var display = new matrix.Display();
+		display.text(item.day, {color:'white'});
+		display.text(sprintf('%s %d° (%d°)', item.condition, item.high, item.low),{color:'blue'});
+		display.send();
 	});
 	
 }
@@ -211,7 +211,7 @@ function enableRSS() {
 	var rss = new RSS(config);
 
 	rss.on('feed', function(rss) {
-		display.text(sprintf('%s - %s - %s', rss.name, rss.category, rss.text));
+		matrix.text(sprintf('%s - %s - %s', rss.name, rss.category, rss.text));
 	});
 }
 

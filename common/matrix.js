@@ -2,7 +2,7 @@ var sprintf = require('./sprintf');
 var io = null;
 
 
-var Display = module.exports = {};
+var Matrix = module.exports = {};
 
 
 
@@ -105,7 +105,7 @@ Display.Batch = function() {
 
 */
 
-Display.Batch = function() {
+Matrix.Display = function() {
 	
 	var self = this;
 	
@@ -217,14 +217,14 @@ Display.Batch = function() {
 
 
 
-Display.init = function(server) {
+Matrix.init = function(server) {
 
 	io = require('socket.io')(server);
 	
 	io.on('connection', function (socket) {
 	
 		var now = new Date();
-		var display = new Display.Batch();
+		var display = new Matrix.Display();
 		
 		display.image('images/phiab-logo.png');
 		display.text(sprintf("%02d:%02d", now.getHours(), now.getMinutes()));
@@ -234,24 +234,24 @@ Display.init = function(server) {
 }
 
 
-Display.play = function(sound, options) {
+Matrix.play = function(sound, options) {
 
-	var batch = new Display.Batch();
-	batch.play(sound, options);
-	batch.send();
+	var display = new Matrix.Display();
+	display.play(sound, options);
+	display.send();
 }
 
-Display.text = function(text, options) {
+Matrix.text = function(text, options) {
 
-	var batch = new Display.Batch();
-	batch.text(text, options);
-	batch.send();
+	var display = new Matrix.Display();
+	display.text(text, options);
+	display.send();
 }
 
 
-Display.image = function(image, options) {
+Matrix.image = function(image, options) {
 
-	var batch = new Display.Batch();
-	batch.image(image, options);
-	batch.send();
+	var display = new Matrix.Display();
+	display.image(image, options);
+	display.send();
 }

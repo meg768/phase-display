@@ -14,7 +14,6 @@ module.exports = function(config) {
 	function init(url) {
 		var http = require('http');
 		var schedule = require('node-schedule');
-		var display = require('../common/display.js');
 	
 		function ping() {
 		
