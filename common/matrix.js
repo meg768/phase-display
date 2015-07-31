@@ -238,7 +238,7 @@ Matrix.init = function(server) {
 		var now = new Date();
 		var display = new Matrix.Display();
 		
-		display.emoji(729);
+		display.emoji(729, {hold:4});
 		display.image('images/phiab-logo.png');
 		display.text(sprintf("%02d:%02d", now.getHours(), now.getMinutes()));
 		display.send();
