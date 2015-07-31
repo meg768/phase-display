@@ -181,10 +181,10 @@ function enableWeather() {
 	var weather = new Weather(config);
 	
 	weather.on('forecast', function(item) {
-		var display = new display.Batch();
-		display.text(item.day, {color:'white'});
-		display.text(sprintf('%s %d(%d) °C', item.condition, item.high, item.low),{color:'blue'});
-		display.send();
+		var batch = new display.Batch();
+		batch.text(item.day, {color:'white'});
+		batch.text(sprintf('%s %d(%d) °C', item.condition, item.high, item.low),{color:'blue'});
+		batch.send();
 	});
 	
 }
