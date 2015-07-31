@@ -180,25 +180,26 @@ Matrix.Display = function() {
 	}
 	
 	self.image = function(image, options) {
-		
+
+		if (options == undefined)
+			options = {};
+			
 		var msg = {};
 		
 		msg.command   = 'python';
 		msg.args      = ['run-image.py', '-i', image];
 		msg.options   = {cwd: 'python'};
+
+		if (options.hold != undefined) {
+			msg.args.push('-h');
+			msg.args.push(options.hold);		
+		}
 		
 		_messages.push(msg);	
 	}
 
 	self.emoji = function(number, options) {
-		
-		var msg = {};
-		
-		msg.command   = 'python';
-		msg.args      = ['run-image.py', '-i', sprintf('emoji/%d.png', number)];
-		msg.options   = {cwd: 'python'};
-		
-		_messages.push(msg);	
+		self.image(sprintf('emoji/%d.png', number), options);
 	}
 	
 
