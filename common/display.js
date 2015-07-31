@@ -112,8 +112,8 @@ Display.Batch = function() {
 	var _default = {
 		text: {
 			font: 'Century-Gothic-Bold-Italic',
-			size: 24,
-			color: 'rgb(128,128,128)'
+			size: 22,
+			color: 'rgb(255,0,0)'
 		},
 		image: {
 			

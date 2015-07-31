@@ -100,7 +100,7 @@ function enableFinance() {
 	
 			if (latestQuote != undefined) {
 				var options = {};
-				//options.font     = 'Century-Gothic-Bold-Italic';
+				options.font     = 'Century-Gothic-Bold-Italic';
 				options.size     = 26;
 				
 				options.color = 'white';
@@ -181,7 +181,10 @@ function enableWeather() {
 	var weather = new Weather(config);
 	
 	weather.on('forecast', function(item) {
-		display.text(sprintf('%s - %s %d°C(%d°C)', item.day, item.condition, item.high, item.low),{color:'blue'});
+		var display = new display.Batch();
+		display.text(item.day, {color:'white'});
+		display.text(sprintf('%s %d(%d) °C', item.condition, item.high, item.low),{color:'blue'});
+		display.send();
 	});
 	
 }
