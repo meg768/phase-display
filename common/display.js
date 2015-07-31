@@ -5,19 +5,7 @@ var io = null;
 var Display = module.exports = {};
 
 
-Display.init = function(server) {
 
-	io = require('socket.io')(server);
-	
-	io.on('connection', function (socket) {
-	
-		var now = new Date();
-		
-		Display.image('images/phiab-logo.png');
-		Display.text(sprintf("%02d:%02d", now.getHours(), now.getMinutes()));
-	});
-	
-}
 
 Display.Batch = function() {
 
@@ -116,7 +104,130 @@ Display.Batch = function() {
 }
 
 
+Display.Batch = function() {
+	
+	var self = this;
+	
+	var _default = {
+		text: {
+			font: 'Verdana',
+			size: 24,
+			color: 'rgb(128,128,128)'
+		},
+		image: {
+			
+		}
+		
+	};
+	
+	var _messages = [];
+	
+	
+	self.play = function(sound, options) {
+		
+		var msg = {};
+		
+		msg.command   = 'omxplayer';
+		msg.args      = ['--no-keys', '--no-osd', 'audio/' + sound];
+		msg.options   = {cwd: 'python'};
 
+
+		_messages.push(msg);
+	}	
+	
+	self.text = function(text, options) {
+	
+		if (options == undefined)
+			options = {};
+			
+		if (options.size == undefined)
+			options.size = _default.text.size;
+			
+		if (options.font == undefined)
+			options.font = _default.text.font;
+
+		if (options.color == undefined)
+			options.color = _default.text.color;
+			
+		text = text.replace(/(\r\n|\n|\r)/gm, '\n');
+		text = text.replace('\t',' ');
+		
+		var texts = text.split('\n');
+		
+		for (var i in texts) {
+			var text = texts[i].trim();
+			 
+			if (text.length > 0) {
+				var msg = {};
+				
+				msg.command   = 'python';
+				msg.args      = ['run-text.py', '-t', text];
+				msg.options   = {cwd: 'python'};
+
+				msg.args.push('-c');
+				msg.args.push(options.color);
+
+				msg.args.push('-f');
+				msg.args.push(options.font);
+
+				msg.args.push('-s');
+				msg.args.push(sprintf('%s', parseInt(options.size)));
+	
+				_messages.push(msg);
+			}
+		}
+	}
+	
+	self.image = function(image, options) {
+		
+		var msg = {};
+		
+		msg.command   = 'python';
+		msg.args      = ['run-image.py', '-i', image];
+		msg.options   = {cwd: 'python'};
+		
+		_messages.push(msg);	
+	}
+	
+
+	self.send = function(priority) {
+
+		if (_messages.length > 0) {
+		
+			if (typeof priority == 'string') {
+				_messages.forEatch(function(msg) {
+					msg.priority = priority;
+				});
+			}
+			
+			console.log('Sending', _messages);
+			io.sockets.emit('spawn', _messages);
+			
+			_messages = [];
+		}
+		
+				
+	}
+	
+}
+
+
+
+Display.init = function(server) {
+
+	io = require('socket.io')(server);
+	
+	io.on('connection', function (socket) {
+	
+		var now = new Date();
+		var display = new Display.Batch();
+		
+		display.image('images/phiab-logo.png');
+		display.text(sprintf("%02d:%02d", now.getHours(), now.getMinutes()));
+		display.send();
+	});
+	
+}
 
 
 Display.play = function(sound, options) {

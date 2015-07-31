@@ -66,7 +66,7 @@ function enableFinance() {
 		var rule = new schedule.RecurrenceRule();		
 		
 		rule.minute = new schedule.Range(0, 59, 2);
-		rule.hour   = new schedule.Range(7, 23);
+		rule.hour   = new schedule.Range(9, 17);
 	
 		finance.fetchQuotes();
 		
@@ -174,7 +174,7 @@ function enableWeather() {
 	var config = {
 		schedule: {
 			hour:   new schedule.Range(7, 23),
-			minute: [0, 10, 20, 30, 40, 50]
+			minute: new schedule.Range(0, 59) //[0, 10, 20, 30, 40, 50]
 		}
 	};
 	
@@ -216,7 +216,7 @@ function enableRSS() {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 enableWeather();
-enableFinance();
+//enableFinance();
 enableMail();
 enablePing();
 enableRSS();
