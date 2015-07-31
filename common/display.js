@@ -190,13 +190,16 @@ Display.Batch = function() {
 	}
 	
 
-	self.send = function(priority) {
+	self.send = function(options) {
 
+		if (options == undefined)
+			options = {};
+			
 		if (_messages.length > 0) {
 		
-			if (typeof priority == 'string') {
+			if (typeof options.priority == 'string') {
 				_messages.forEatch(function(msg) {
-					msg.priority = priority;
+					msg.priority = options.priority;
 				});
 			}
 			

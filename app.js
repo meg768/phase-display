@@ -96,12 +96,11 @@ function enableFinance() {
 		schedule.scheduleJob(rule, function() {
 			var batch = new display.Batch();
 			
-			batch.image('images/phiab-logo.png', {priority:'low'});
+			batch.image('images/phiab-logo.png');
 	
 			if (latestQuote != undefined) {
 				var options = {};
-				options.font     = 'Century-Gothic-Bold-Italic';
-				options.priority = 'low';
+				//options.font     = 'Century-Gothic-Bold-Italic';
 				options.size     = 26;
 				
 				options.color = 'white';
@@ -115,7 +114,7 @@ function enableFinance() {
 
 			}
 			
-			batch.send();
+			batch.send({priority:'low'});
 		});			
 		
 	}	
