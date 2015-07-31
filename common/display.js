@@ -6,7 +6,7 @@ var Display = module.exports = {};
 
 
 
-
+/*
 Display.Batch = function() {
 
 	var self = this;
@@ -103,6 +103,7 @@ Display.Batch = function() {
 	
 }
 
+*/
 
 Display.Batch = function() {
 	
@@ -110,7 +111,7 @@ Display.Batch = function() {
 	
 	var _default = {
 		text: {
-			font: 'Verdana',
+			font: 'Century-Gothic-Bold-Italic',
 			size: 24,
 			color: 'rgb(128,128,128)'
 		},
