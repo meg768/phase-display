@@ -189,6 +189,17 @@ Matrix.Display = function() {
 		
 		_messages.push(msg);	
 	}
+
+	self.emoji = function(number, options) {
+		
+		var msg = {};
+		
+		msg.command   = 'python';
+		msg.args      = ['run-image.py', '-i', sprintf('emoji/%d.png', number)];
+		msg.options   = {cwd: 'python'};
+		
+		_messages.push(msg);	
+	}
 	
 
 	self.send = function(options) {
@@ -226,6 +237,7 @@ Matrix.init = function(server) {
 		var now = new Date();
 		var display = new Matrix.Display();
 		
+		display.emoji(729);
 		display.image('images/phiab-logo.png');
 		display.text(sprintf("%02d:%02d", now.getHours(), now.getMinutes()));
 		display.send();
@@ -253,5 +265,12 @@ Matrix.image = function(image, options) {
 
 	var display = new Matrix.Display();
 	display.image(image, options);
+	display.send();
+}
+
+Matrix.emoji = function() {
+
+	var display = new Matrix.Display();
+	display.image(arguments);
 	display.send();
 }

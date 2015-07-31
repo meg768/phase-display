@@ -218,7 +218,7 @@ function enableRSS() {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 enableWeather();
-//enableFinance();
+enableFinance();
 enableMail();
 enablePing();
 enableRSS();
