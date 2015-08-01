@@ -211,7 +211,7 @@ Matrix.Display = function() {
 		if (_messages.length > 0) {
 		
 			if (typeof options.priority == 'string') {
-				_messages.forEatch(function(msg) {
+				_messages.forEach(function(msg) {
 					msg.priority = options.priority;
 				});
 			}
