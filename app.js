@@ -253,7 +253,7 @@ enableMail();
 enablePing();
 enableRSS();
 
-test();
+//test();
 
 console.log('OK!');
 
