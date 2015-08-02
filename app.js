@@ -227,7 +227,8 @@ function test() {
 		matrix.emit('x-message', {
 			type: 'text',
 			text: 'Hej',
-			color: 'yellow'
+			color: 'yellow',
+			priority: 'low'
 		});
 	});
 		
