@@ -223,6 +223,12 @@ enableMail();
 enablePing();
 enableRSS();
 
+matrix.emit('x-message', {
+	type: 'text',
+	text: 'Hej',
+	color: 'yellow'
+});
+
 console.log('OK!');
 
 
