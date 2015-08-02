@@ -224,12 +224,24 @@ function test() {
 	rule.second = new schedule.Range(0, 59, 5);
 
 	var job = schedule.scheduleJob(rule, function() {
-		matrix.emit('x-message', {
-			type: 'text',
-			text: 'Hej',
-			color: 'yellow',
-			priority: 'low'
-		});
+		
+		foo = [
+			{
+				type: 'text',
+				text: 'Hej',
+				color: 'yellow',
+				priority: 'low'
+				
+			},
+			{
+				type: 'image',
+				image: 'emoji/1.png',
+				priority: 'low'
+				
+			}
+		];
+		
+		matrix.emit('x-message', foo);
 	});
 		
 }
