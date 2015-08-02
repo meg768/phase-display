@@ -217,17 +217,30 @@ function enableRSS() {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+
+function test() {
+	var rule = new schedule.RecurrenceRule();		
+	
+	rule.second = new schedule.Range(0, 59, 5);
+
+	var job = schedule.scheduleJob(rule, function() {
+		matrix.emit('x-message', {
+			type: 'text',
+			text: 'Hej',
+			color: 'yellow'
+		});
+	});
+		
+}
+
+
 enableWeather();
 enableFinance();
 enableMail();
 enablePing();
 enableRSS();
 
-matrix.emit('x-message', {
-	type: 'text',
-	text: 'Hej',
-	color: 'yellow'
-});
+test();
 
 console.log('OK!');
 
