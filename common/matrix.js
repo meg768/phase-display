@@ -134,9 +134,7 @@ Matrix.Display = function() {
 				});
 			}
 			
-			console.log('Sending', _messages);
-			//io.sockets.emit('spawn', _messages);
-			io.sockets.emit('X-message', _messages);
+			Matrix.emit('X-message', _messages);
 						
 			_messages = [];
 		}
@@ -167,6 +165,7 @@ Matrix.init = function(server) {
 
 
 Matrix.emit = function(name, data) {
+	console.log('Emitting', name, data);
 	io.sockets.emit(name, data);
 }
 
