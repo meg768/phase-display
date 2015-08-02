@@ -35,6 +35,9 @@ Matrix.Display = function() {
 		msg.args      = ['--no-keys', '--no-osd', 'audio/' + sound];
 		msg.options   = {cwd: 'python'};
 
+		msg = {};
+		msg.type  = 'audio';
+		msg.sound = sound;
 
 		_messages.push(msg);
 	}	
@@ -77,6 +80,13 @@ Matrix.Display = function() {
 				msg.args.push('-s');
 				msg.args.push(sprintf('%s', parseInt(options.size)));
 	
+				msg = {};
+				msg.type  = 'text';
+				msg.text  = text;
+				msg.color = options.color;
+				msg.font  = options.font;
+				msg.size  = options.size;
+				
 				_messages.push(msg);
 			}
 		}
@@ -97,6 +107,11 @@ Matrix.Display = function() {
 			msg.args.push('-h');
 			msg.args.push(options.hold);		
 		}
+		
+		msg = {};
+		msg.type  = 'image';
+		msg.image = image;
+		msg.hold  = options.hold;
 		
 		_messages.push(msg);	
 	}
@@ -120,8 +135,9 @@ Matrix.Display = function() {
 			}
 			
 			console.log('Sending', _messages);
-			io.sockets.emit('spawn', _messages);
-			
+			//io.sockets.emit('spawn', _messages);
+			io.sockets.emit('X-message', _messages);
+						
 			_messages = [];
 		}
 		
