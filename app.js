@@ -234,11 +234,11 @@ function test() {
 }
 
 
-enableWeather();
-enableFinance();
-enableMail();
-enablePing();
-enableRSS();
+//enableWeather();
+//enableFinance();
+//enableMail();
+//enablePing();
+//enableRSS();
 
 test();
 
