@@ -134,7 +134,7 @@ Matrix.Display = function() {
 				});
 			}
 			
-			Matrix.emit('X-message', _messages);
+			Matrix.emit('message', _messages);
 						
 			_messages = [];
 		}
