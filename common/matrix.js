@@ -100,7 +100,7 @@ Matrix.Display = function() {
 		var msg = {};
 		
 		msg.command   = 'python';
-		msg.args      = ['run-image.py', '-i', image];
+		msg.args      = ['run-image.py', '-f', image];
 		msg.options   = {cwd: 'python'};
 
 		if (options.hold != undefined) {
