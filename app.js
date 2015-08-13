@@ -234,6 +234,8 @@ function enableQuotes() {
 			}
 			
 			display.send({priority:'low'});
+			
+			story = [];
 		});			
 		
 	}	
