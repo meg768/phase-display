@@ -270,7 +270,7 @@ function enableRates() {
 	
 	var Rates = require('./modules/rates');
 	var rates = new Rates(config);
-	var rate  = undefined;
+	var story = [];
 
 	function scheduleFetch() {
 		var rule    = new schedule.RecurrenceRule();
@@ -291,29 +291,37 @@ function enableRates() {
 		rule.hour   = config.schedule.fetch.hour;
 		rule.minute = config.schedule.fetch.minute;
 		rule.second = config.schedule.fetch.second;
-		
+
 		
 		schedule.scheduleJob(rule, function() {
 			
-			if (rate != undefined) {
+			if (story.length > 0) {
+	
 				var display = new matrix.Display();
 	
-				var options = {};
-				options.font     = config.font.name;
-				options.size     = config.font.size;
-				options.color    = config.font.color;
-	
-				display.text(sprintf('%s %.2f', rate.name, rate.value), options);
-	
+				for (var index in story) {
+					var rate = story[index];
+
+					var options = {};
+					options.font     = config.font.name;
+					options.size     = config.font.size;
+					options.color    = config.font.color;
+		
+					display.text(sprintf('%s %.2f', rate.name, rate.value), options);
+		
+				}
+				
 				display.send({priority:'low'});
+				story = [];
 			}
-			
+	
 		});			
+
 		
 	}	
 
 	rates.on('rate', function(data) {
-		rate = data;
+		story.push(data);
 	});
 
 	scheduleFetch();
