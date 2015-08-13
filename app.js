@@ -179,7 +179,7 @@ function enableQuotes() {
 	
 	var Quotes = require('./modules/quotes.js');
 	var quotes = new Quotes(config);
-	var quote  = undefined;
+	var story  = [];
 
 	function scheduleFetch() {
 		var rule = new schedule.RecurrenceRule();		
@@ -206,23 +206,30 @@ function enableQuotes() {
 		
 			var display = new matrix.Display();
 	
-			if (quote != undefined) {
+			if (story.length > 0) {
+				for (var index in story) {
+					var quote = story[index];
+					
+					var options = {};
+					options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
+					options.size     = config.font.size; //26;
+					
+					if (quote.logo != undefined)
+						display.image(quote.logo);
+					else
+						display.text(quote.name, options);
 	
-				if (quote.logo != undefined)
-					display.image(quote.logo);
-
-				var options = {};
-				options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
-				options.size     = config.font.size; //26;
-				
-				options.color = config.colors.currency;
-				display.text(sprintf('%.2f', quote.price), options);
-
-				options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
-				display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
-
-				options.color = config.colors.volume;
-				display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
+					options.color = config.colors.currency;
+					display.text(sprintf('%.2f', quote.price), options);
+	
+					options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
+					display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
+	
+					options.color = config.colors.volume;
+					display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
+					
+				}
+	
 
 			}
 			
@@ -232,7 +239,7 @@ function enableQuotes() {
 	}	
 
 	quotes.on('quote', function(data) {
-		quote = data;
+		story.push(data);
 	});
 
 	scheduleFetch();
