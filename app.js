@@ -32,7 +32,7 @@ function enablePing() {
 		host: 'phi-display.herokuapp.com',
 		path: '/',
 		schedule: {
-			hour   : new schedule.Range(7, 23),
+			hour   : new schedule.Range(10, 23),
 			minute : new schedule.Range(0, 59, 15)
 		}
 	};
@@ -160,7 +160,8 @@ function enableQuotes() {
 			}
 		},
 		'quotes' : [
-			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' }
+			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' },
+			{ 'name':'H&M',   'symbol':'HM.ST' }
 		],
 		
 		'font' : {
@@ -206,7 +207,8 @@ function enableQuotes() {
 	
 			if (quote != undefined) {
 	
-				display.image(quote.logo);
+				if (quote.logo != undefined)
+					display.image(quote.logo);
 
 				var options = {};
 				options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
@@ -439,8 +441,8 @@ function test() {
 
 
 //enableWeather();
-//enableQuotes();
-enableRates();
+enableQuotes();
+//enableRates();
 //enableMail();
 //enablePing();
 //enableRSS();
