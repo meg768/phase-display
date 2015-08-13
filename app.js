@@ -149,14 +149,14 @@ function enableQuotes() {
 	var config = {
 		'schedule': {
 			'fetch': {
-				'hour'   : new schedule.Range(7, 23, 1),
-				'second' : new schedule.Range(0, 59, 10),
-				'minute' : undefined
+				'hour'   : new schedule.Range(9, 23, 1),
+				'minute' : new schedule.Range(0, 59, 5),
+				'second' : undefined
 			},
 			'display': {
-				'hour'   : new schedule.Range(7, 23, 1),
-				'second' : new schedule.Range(0, 59, 10),
-				'minute' : undefined
+				'hour'   : new schedule.Range(9, 23, 1),
+				'minute' : new schedule.Range(0, 59, 1),
+				'second' : new schedule.Range(0, 59, 10)
 			}
 		},
 		'quotes' : [
@@ -254,14 +254,14 @@ function enableRates() {
 	var config = {
 		'schedule': {
 			'fetch': {
-				'hour'   : new schedule.Range(7, 23, 1),
-				'second' : new schedule.Range(0, 59, 10),
-				'minute' : undefined
+				'hour'   : new schedule.Range(9, 23, 1),
+				'minute' : new schedule.Range(0, 59, 5),
+				'second' : undefined
 			},
 			'display': {
-				'hour'   : new schedule.Range(7, 23, 1),
-				'second' : new schedule.Range(0, 59, 10),
-				'minute' : undefined
+				'hour'   : new schedule.Range(9, 23, 1),
+				'minute' : new schedule.Range(0, 59, 1),
+				'second' : new schedule.Range(0, 59, 10)
 			}
 		},
 	
@@ -449,8 +449,8 @@ function test() {
 
 
 //enableWeather();
-enableQuotes();
-//enableRates();
+//enableQuotes();
+enableRates();
 //enableMail();
 //enablePing();
 //enableRSS();
