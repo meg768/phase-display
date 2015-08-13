@@ -53,7 +53,13 @@ module.exports = function(config) {
 	
 					for (var index in quotes) {
 						var quote = quotes[index];
-						self.emit('quote', names[quote.symbol], quote.symbol, parseFloat(quote.LastTradePriceOnly), parseFloat(quote.PercentChange), parseInt(quote.Volume));
+						self.emit('quote', {
+							name   : names[quote.symbol], 
+							symbol : quote.symbol, 
+							price  : parseFloat(quote.LastTradePriceOnly), 
+							change : parseFloat(quote.PercentChange), 
+							volume : parseInt(quote.Volume)
+						});
 					}
 				}
 				else

@@ -202,14 +202,8 @@ function enableQuotes() {
 		
 	}	
 
-	quotes.on('quote', function(name, symbol, price, change, volume) {
-		quote = {
-			name:name,
-			symbol:symbol,
-			price:price,
-			volume:volume,
-			change:change
-		}
+	quotes.on('quote', function(data) {
+		quote = data;
 	});
 
 	scheduleFetch();
