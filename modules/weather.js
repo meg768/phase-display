@@ -21,7 +21,7 @@ module.exports = function(config) {
 			0:'Tornado',
 			1:'Tropisk storm',
 			2:'Orkan',
-			3:'Severe thunderstorms',
+			3:'Kraftigt åskväder',
 			4:'Åska',
 			5:'Snöblandat regn',
 			6:'Blandat regn och snöblandat regn',
