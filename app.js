@@ -147,7 +147,18 @@ function enableQuotes() {
 	
 	
 	var config = {
-	
+		'schedule': {
+			'fetch': {
+				'hour'   : new schedule.Range(7, 23, 1),
+				'second' : new schedule.Range(0, 59, 10),
+				'minute' : undefined
+			},
+			'display': {
+				'hour'   : new schedule.Range(7, 23, 1),
+				'second' : new schedule.Range(0, 59, 10),
+				'minute' : undefined
+			}
+		},
 		'quotes' : [
 			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' }
 		],
@@ -158,8 +169,10 @@ function enableQuotes() {
 		},
 		
 		'colors':  {
-			'plus'  : 'rgb(255, 0, 0)',
-			'minus' : 'rgb(255, 0, 0)'
+			'plus'    : 'rgb(255, 0, 0)',
+			'minus'   : 'rgb(255, 0, 0)',
+			'currency': 'white',
+			'volume'  : 'pink'
 		}
 	};
 	
@@ -170,8 +183,8 @@ function enableQuotes() {
 	function scheduleFetch() {
 		var rule = new schedule.RecurrenceRule();		
 		
-		rule.minute = new schedule.Range(0, 59, 1);
-		rule.hour   = new schedule.Range(9, 23);
+		rule.hour   = config.schedule.fetch.hour;
+		rule.minute = config.schedule.fetch.minute;
 	
 		quotes.fetch();
 		
@@ -198,13 +211,13 @@ function enableQuotes() {
 				options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
 				options.size     = config.font.size; //26;
 				
-				options.color = 'white';
+				options.color = config.colors.currency;
 				display.text(sprintf('%.2f', quote.price), options);
 
 				options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
 				display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
 
-				options.color = 'blue';
+				options.color = config.colors.volume;
 				display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
 
 			}
