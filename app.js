@@ -160,7 +160,7 @@ function enableQuotes() {
 			}
 		},
 		'quotes' : [
-			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' }
+			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' },
 			{ 'name':'H&M', 'symbol':'HM-B.ST' }
 
 		],
