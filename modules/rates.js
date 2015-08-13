@@ -43,10 +43,11 @@ module.exports = function(config) {
 			try {
 				if (error)
 					throw error;
-					
+
 				if (response.statusCode == 200) {
 					var json = JSON.parse(body);
 					var items = json.query.results.rate;
+					
 					
 					if (!util.isArray(items))
 						items = [items];

@@ -171,8 +171,7 @@ function enableQuotes() {
 		'colors':  {
 			'plus'    : 'rgb(0, 255, 0)',
 			'minus'   : 'rgb(255, 0, 0)',
-			'currency': 'white',
-			'volume'  : 'pink'
+			'volume'  : 'rgb(0, 0, 255)'
 		}
 	};
 	
@@ -262,8 +261,9 @@ function enableRates() {
 		],
 		
 		'font' : {
-			'name': 'Century-Gothic-Bold-Italic',
-			'size': 26
+			'name'  : 'Century-Gothic-Bold-Italic',
+			'size'  : 26,
+			'color' : 'white'
 		}
 	
 	};
@@ -292,20 +292,22 @@ function enableRates() {
 		rule.minute = config.schedule.fetch.minute;
 		rule.second = config.schedule.fetch.second;
 		
+		
 		schedule.scheduleJob(rule, function() {
-			var display = new matrix.Display();
 			
 			if (rate != undefined) {
+				var display = new matrix.Display();
+	
 				var options = {};
 				options.font     = config.font.name;
 				options.size     = config.font.size;
-				options.color = 'white';
-
+				options.color    = config.font.color;
+	
 				display.text(sprintf('%s %.2f', rate.name, rate.value), options);
-
+	
+				display.send({priority:'low'});
 			}
 			
-			display.send({priority:'low'});
 		});			
 		
 	}	
