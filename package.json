@@ -16,7 +16,8 @@
     "request": "~2.51.0",
     "socket.io": "~1.2.1",
     "twit": "~1.1.19",
-    "mail-listener2": "~0.1.8"
+    "mail-listener2": "~0.1.8",
+    "extend": "~3.0.0"
   },
   "engines": {
     "node": "0.10.x"

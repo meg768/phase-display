@@ -2,7 +2,7 @@ var schedule = require('node-schedule');
 var util     = require('util');
 var request  = require('request');
 var events   = require('events');
-
+var extend   = require('extend');
 
 module.exports = function(config) {
 
@@ -26,11 +26,13 @@ module.exports = function(config) {
 		
 		var quotes = config.quotes;
 		var symbols = [];
-		var names = {};
+		var info = {};
 		
 		for (var index in quotes) {
-			symbols.push(quotes[index].symbol);
-			names[quotes[index].symbol] = quotes[index].name;
+			var quote = quotes[index];
+			
+			symbols.push(quote.symbol);
+			info[quote.symbol] = quote;
 		}		
 	
 		var url = '';
@@ -46,20 +48,29 @@ module.exports = function(config) {
 					
 				if (response.statusCode == 200) {
 					var json = JSON.parse(body);
-					var quotes = json.query.results.quote;
+					var results = json.query.results.quote;
 					
-					if (!util.isArray(quotes))
-						quotes = [quotes];
+					if (!util.isArray(results))
+						results = [results];
 	
-					for (var index in quotes) {
-						var quote = quotes[index];
-						self.emit('quote', {
-							name   : names[quote.symbol], 
-							symbol : quote.symbol, 
-							price  : parseFloat(quote.LastTradePriceOnly), 
-							change : parseFloat(quote.PercentChange), 
-							volume : parseInt(quote.Volume)
-						});
+					for (var index in results) {
+						var result = results[index];
+						
+						var data  = {
+							//name   : names[result.symbol], 
+							//symbol : result.symbol, 
+							price  : parseFloat(result.LastTradePriceOnly), 
+							change : parseFloat(result.PercentChange), 
+							volume : parseInt(result.Volume)
+							
+						};
+						
+						console.log('extending...', data);
+						data = extend(data, info[result.symbol]);
+						console.log('extending result:', data);
+						
+
+						self.emit('quote', data);
 					}
 				}
 				else

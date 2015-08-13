@@ -149,8 +149,18 @@ function enableQuotes() {
 	var config = {
 	
 		'quotes' : [
-			{ 'name':'Phase',  'symbol':'PHI.ST' }
-		]
+			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' }
+		],
+		
+		'font' : {
+			'name': 'Century-Gothic-Bold-Italic',
+			'size': 26
+		},
+		
+		'colors':  {
+			'plus'  : 'rgb(255, 0, 0)',
+			'minus' : 'rgb(255, 0, 0)'
+		}
 	};
 	
 	var Quotes = require('./modules/quotes.js');
@@ -161,7 +171,7 @@ function enableQuotes() {
 		var rule = new schedule.RecurrenceRule();		
 		
 		rule.minute = new schedule.Range(0, 59, 1);
-		rule.hour   = new schedule.Range(9, 17);
+		rule.hour   = new schedule.Range(9, 23);
 	
 		quotes.fetch();
 		
@@ -177,19 +187,21 @@ function enableQuotes() {
 		rule.second = new schedule.Range(0, 59, 10);
 		
 		schedule.scheduleJob(rule, function() {
+		
 			var display = new matrix.Display();
-			
-			display.image('images/phiab-logo.png');
 	
 			if (quote != undefined) {
+	
+				display.image(quote.logo);
+
 				var options = {};
-				options.font     = 'Century-Gothic-Bold-Italic';
-				options.size     = 26;
+				options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
+				options.size     = config.font.size; //26;
 				
 				options.color = 'white';
 				display.text(sprintf('%.2f', quote.price), options);
 
-				options.color = quote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
+				options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
 				display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
 
 				options.color = 'blue';
