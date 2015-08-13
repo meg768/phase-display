@@ -4,7 +4,7 @@ var server   = require('http').Server(app);
 var schedule = require('node-schedule');
 
 var config   = require('./config');
-var sprintf  = require('./common/sprintf');
+var sprintf  = require('./common/sprintf.js');
 var matrix   = require('./common/matrix.js');
 
 
@@ -43,6 +43,7 @@ function enablePing() {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+/*
 function enableFinance() {
 	
 	var latestQuote = undefined;
@@ -138,6 +139,152 @@ function enableFinance() {
 	scheduleDisplayQuotes();
 
 }
+*/
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+function enableQuotes() {
+	
+	
+	var config = {
+	
+		'quotes' : [
+			{ 'name':'Phase',  'symbol':'PHI.ST' }
+		]
+	};
+	
+	var Quotes = require('./modules/quotes.js');
+	var quotes = new Quotes(config);
+	var quote  = undefined;
+
+	function scheduleFetch() {
+		var rule = new schedule.RecurrenceRule();		
+		
+		rule.minute = new schedule.Range(0, 59, 1);
+		rule.hour   = new schedule.Range(9, 17);
+	
+		quotes.fetch();
+		
+		var job = schedule.scheduleJob(rule, function() {
+			quotes.fetch();
+		});
+		
+	}
+	
+	function scheduleDisplay() {
+		var rule    = new schedule.RecurrenceRule();
+		rule.hour   = new schedule.Range(7, 23, 1);
+		rule.second = new schedule.Range(0, 59, 10);
+		
+		schedule.scheduleJob(rule, function() {
+			var display = new matrix.Display();
+			
+			display.image('images/phiab-logo.png');
+	
+			if (quote != undefined) {
+				var options = {};
+				options.font     = 'Century-Gothic-Bold-Italic';
+				options.size     = 26;
+				
+				options.color = 'white';
+				display.text(sprintf('%.2f', quote.price), options);
+
+				options.color = quote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
+				display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
+
+				options.color = 'blue';
+				display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
+
+			}
+			
+			display.send({priority:'low'});
+		});			
+		
+	}	
+
+	quotes.on('quote', function(name, symbol, price, change, volume) {
+		quote = {
+			name:name,
+			symbol:symbol,
+			price:price,
+			volume:volume,
+			change:change
+		}
+	});
+
+	scheduleFetch();
+	scheduleDisplay();
+
+}
+//////////////////////////////////////////////////////////////////////////////////////////
+
+function enableRates() {
+	
+	
+	var config = {
+	
+		'rates' : [
+			{ 'name':'USD/SEK', 'symbol':'USDSEK' },
+			{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
+		]
+	};
+	
+	var Rates = require('./modules/rates');
+	var rates = new Rates(config);
+	var rate  = undefined;
+
+	function scheduleFetch() {
+		var rule = new schedule.RecurrenceRule();		
+		
+		rule.minute = new schedule.Range(0, 59, 13);
+		rule.hour   = new schedule.Range(7, 23);
+	
+		var job = schedule.scheduleJob(rule, function() {
+			rates.fetch();
+		});
+		
+	}
+
+	function scheduleDisplay() {
+		var rule    = new schedule.RecurrenceRule();
+		rule.hour   = new schedule.Range(7, 23, 1);
+		rule.second = new schedule.Range(0, 59, 10);
+		
+		schedule.scheduleJob(rule, function() {
+			var display = new matrix.Display();
+			
+			display.image('images/phiab-logo.png');
+	
+			if (rate != undefined) {
+				var options = {};
+				options.font     = 'Century-Gothic-Bold-Italic';
+				options.size     = 26;
+				
+				options.color = 'white';
+				display.text(sprintf('%.2f', rate.price), options);
+
+				options.color = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
+				display.text(sprintf('%s%.1f%%', rate.change >= 0 ? '+' : '', rate.change), options)
+
+				options.color = 'blue';
+				display.text(sprintf('%.1f MSEK', (latestQuote.volume * latestQuote.price) / 1000000.0), options);
+
+			}
+			
+			display.send({priority:'low'});
+		});			
+		
+	}	
+
+	rates.on('rate', function(name, symbol, value) {
+		matrix.text(sprintf('%s %.2f', name, value), {color:'rgb(0,0,255)'});
+	});
+
+	scheduleFetch();
+	scheduleDisplay();
+
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -247,11 +394,12 @@ function test() {
 }
 
 
-enableWeather();
-enableFinance();
-enableMail();
-enablePing();
-enableRSS();
+//enableWeather();
+enableQuotes();
+//enableRates();
+//enableMail();
+//enablePing();
+//enableRSS();
 
 //test();
 
