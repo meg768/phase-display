@@ -169,7 +169,7 @@ function enableQuotes() {
 		},
 		
 		'colors':  {
-			'plus'    : 'rgb(255, 0, 0)',
+			'plus'    : 'rgb(0, 255, 0)',
 			'minus'   : 'rgb(255, 0, 0)',
 			'currency': 'white',
 			'volume'  : 'pink'
@@ -196,8 +196,10 @@ function enableQuotes() {
 	
 	function scheduleDisplay() {
 		var rule    = new schedule.RecurrenceRule();
-		rule.hour   = new schedule.Range(7, 23, 1);
-		rule.second = new schedule.Range(0, 59, 10);
+		
+		rule.hour   = config.schedule.display.hour;
+		rule.minute = config.schedule.display.minute;
+		rule.second = config.schedule.display.second;
 		
 		schedule.scheduleJob(rule, function() {
 		
@@ -241,11 +243,29 @@ function enableRates() {
 	
 	
 	var config = {
+		'schedule': {
+			'fetch': {
+				'hour'   : new schedule.Range(7, 23, 1),
+				'second' : new schedule.Range(0, 59, 10),
+				'minute' : undefined
+			},
+			'display': {
+				'hour'   : new schedule.Range(7, 23, 1),
+				'second' : new schedule.Range(0, 59, 10),
+				'minute' : undefined
+			}
+		},
 	
 		'rates' : [
 			{ 'name':'USD/SEK', 'symbol':'USDSEK' },
 			{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
-		]
+		],
+		
+		'font' : {
+			'name': 'Century-Gothic-Bold-Italic',
+			'size': 26
+		}
+	
 	};
 	
 	var Rates = require('./modules/rates');
@@ -253,11 +273,13 @@ function enableRates() {
 	var rate  = undefined;
 
 	function scheduleFetch() {
-		var rule = new schedule.RecurrenceRule();		
-		
-		rule.minute = new schedule.Range(0, 59, 13);
-		rule.hour   = new schedule.Range(7, 23);
+		var rule    = new schedule.RecurrenceRule();
+		rule.hour   = config.schedule.display.hour;
+		rule.minute = config.schedule.display.minute;
+		rule.second = config.schedule.display.second;
 	
+		rates.fetch();
+		
 		var job = schedule.scheduleJob(rule, function() {
 			rates.fetch();
 		});
@@ -266,27 +288,20 @@ function enableRates() {
 
 	function scheduleDisplay() {
 		var rule    = new schedule.RecurrenceRule();
-		rule.hour   = new schedule.Range(7, 23, 1);
-		rule.second = new schedule.Range(0, 59, 10);
+		rule.hour   = config.schedule.fetch.hour;
+		rule.minute = config.schedule.fetch.minute;
+		rule.second = config.schedule.fetch.second;
 		
 		schedule.scheduleJob(rule, function() {
 			var display = new matrix.Display();
 			
-			display.image('images/phiab-logo.png');
-	
 			if (rate != undefined) {
 				var options = {};
-				options.font     = 'Century-Gothic-Bold-Italic';
-				options.size     = 26;
-				
+				options.font     = config.font.name;
+				options.size     = config.font.size;
 				options.color = 'white';
-				display.text(sprintf('%.2f', rate.price), options);
 
-				options.color = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
-				display.text(sprintf('%s%.1f%%', rate.change >= 0 ? '+' : '', rate.change), options)
-
-				options.color = 'blue';
-				display.text(sprintf('%.1f MSEK', (latestQuote.volume * latestQuote.price) / 1000000.0), options);
+				display.text(sprintf('%s %.2f', rate.name, rate.value), options);
 
 			}
 			
@@ -295,8 +310,8 @@ function enableRates() {
 		
 	}	
 
-	rates.on('rate', function(name, symbol, value) {
-		matrix.text(sprintf('%s %.2f', name, value), {color:'rgb(0,0,255)'});
+	rates.on('rate', function(data) {
+		rate = data;
 	});
 
 	scheduleFetch();
@@ -414,8 +429,8 @@ function test() {
 
 
 //enableWeather();
-enableQuotes();
-//enableRates();
+//enableQuotes();
+enableRates();
 //enableMail();
 //enablePing();
 //enableRSS();

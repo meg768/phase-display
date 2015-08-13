@@ -54,7 +54,7 @@ module.exports = function(config) {
 					for (var index in items) {
 						var item = items[index];
 
-						self.emit('rate', names[item.id], item.id, parseFloat(item.Rate));
+						self.emit('rate', {name:names[item.id], symbol:item.id, value:parseFloat(item.Rate)});
 					}
 				}
 				else
