@@ -252,15 +252,13 @@ function enableRSS() {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 enableClock();
-/*
-
 enableWeather();
 enableQuotes();
 enableRates();
 enableMail();
 enablePing();
 enableRSS();
-*/
+
 console.log('OK!');
 
 
