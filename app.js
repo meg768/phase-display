@@ -206,31 +206,27 @@ function enableQuotes() {
 		
 			var display = new matrix.Display();
 	
-			if (story.length > 0) {
-				for (var index in story) {
-					var quote = story[index];
-					
-					var options = {};
-					options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
-					options.size     = config.font.size; //26;
-					
-					if (quote.logo != undefined)
-						display.image(quote.logo);
-					else
-						display.text(quote.name, options);
-	
-					options.color = config.colors.currency;
-					display.text(sprintf('%.2f', quote.price), options);
-	
-					options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
-					display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
-	
-					options.color = config.colors.volume;
-					display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
-					
-				}
-	
+			for (var index in story) {
+				var quote = story[index];
+				
+				var options = {};
+				options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
+				options.size     = config.font.size; //26;
+				
+				if (quote.logo != undefined)
+					display.image(quote.logo);
+				else
+					display.text(quote.name, options);
 
+				options.color = config.colors.currency;
+				display.text(sprintf('%.2f', quote.price), options);
+
+				options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
+				display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
+
+				options.color = config.colors.volume;
+				display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
+				
 			}
 			
 			display.send({priority:'low'});
@@ -255,16 +251,9 @@ function enableRates() {
 	
 	var config = {
 		'schedule': {
-			'fetch': {
-				'hour'   : new schedule.Range(9, 23, 1),
-				'minute' : new schedule.Range(0, 59, 5),
-				'second' : undefined
-			},
-			'display': {
-				'hour'   : new schedule.Range(9, 23, 1),
-				'minute' : new schedule.Range(0, 59, 1),
-				'second' : new schedule.Range(0, 59, 10)
-			}
+			'hour'   : new schedule.Range(9, 23),
+			'minute' : new schedule.Range(0, 59, 1),
+			'minute' : new schedule.Range(0, 59, 10)
 		},
 	
 		'rates' : [
@@ -280,15 +269,32 @@ function enableRates() {
 	
 	};
 	
-	var Rates = require('./modules/rates');
+	var Rates = require('./modules/rates.js');
 	var rates = new Rates(config);
-	var story = [];
 
-	function scheduleFetch() {
+
+
+	rates.on('rates', function(data) {
+		var display = new matrix.Display();
+
+		var options = {};
+		options.font     = config.font.name;
+		options.size     = config.font.size;
+		options.color    = config.font.color;
+
+		data.forEach(function(rate) {
+			display.text(sprintf('%s %.2f', rate.name, rate.value), options);			
+		});
+
+		display.send({priority:'low'});
+		
+	});
+
+	function init() {
 		var rule    = new schedule.RecurrenceRule();
-		rule.hour   = config.schedule.display.hour;
-		rule.minute = config.schedule.display.minute;
-		rule.second = config.schedule.display.second;
+		rule.hour   = config.schedule.hour;
+		rule.minute = config.schedule.minute;
+		rule.second = config.schedule.second;
 	
 		rates.fetch();
 		
@@ -298,46 +304,7 @@ function enableRates() {
 		
 	}
 
-	function scheduleDisplay() {
-		var rule    = new schedule.RecurrenceRule();
-		rule.hour   = config.schedule.fetch.hour;
-		rule.minute = config.schedule.fetch.minute;
-		rule.second = config.schedule.fetch.second;
-
-		
-		schedule.scheduleJob(rule, function() {
-			
-			if (story.length > 0) {
-	
-				var display = new matrix.Display();
-	
-				for (var index in story) {
-					var rate = story[index];
-
-					var options = {};
-					options.font     = config.font.name;
-					options.size     = config.font.size;
-					options.color    = config.font.color;
-		
-					display.text(sprintf('%s %.2f', rate.name, rate.value), options);
-		
-				}
-				
-				display.send({priority:'low'});
-				story = [];
-			}
-	
-		});			
-
-		
-	}	
-
-	rates.on('rate', function(data) {
-		story.push(data);
-	});
-
-	scheduleFetch();
-	scheduleDisplay();
+	init();
 
 }
 

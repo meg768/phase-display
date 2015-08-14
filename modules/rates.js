@@ -48,15 +48,16 @@ module.exports = function(config) {
 					var json = JSON.parse(body);
 					var items = json.query.results.rate;
 					
-					
 					if (!util.isArray(items))
 						items = [items];
-	
-					for (var index in items) {
-						var item = items[index];
 
-						self.emit('rate', {name:names[item.id], symbol:item.id, value:parseFloat(item.Rate)});
-					}
+					var data = [];
+					
+					items.forEach(function(item) {
+						data.push({name:names[item.id], symbol:item.id, value:parseFloat(item.Rate)});
+					});
+					
+					self.emit('rates', data);
 				}
 				else
 					throw new Error('Invalid status code');
