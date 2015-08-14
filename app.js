@@ -156,8 +156,8 @@ function enableRates() {
 function enableMail() {
 	
 	var config = {
-		email    : 'phiabdisplay@gmail.com',
-		password : 'potatismos'
+		email    : 'phasedisplay@gmail.com',
+		password : 'P0tatismos'
 		
 	};
 	
@@ -200,6 +200,7 @@ function enableWeather() {
 	});
 	
 }
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
