@@ -26,6 +26,10 @@ module.exports = {
 	clock: {
 		enabled: true,
 		
+		font: {
+			color: 'blue'
+		},
+		
 		schedule: {
 			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
 			minute : new schedule.Range(0, 59, 1)
@@ -56,6 +60,7 @@ module.exports = {
 			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
 			minute : [0, 15, 30, 45]
 		},
+		
 		host     : 'phi-display.herokuapp.com',
 		path     : '/'
 	},
