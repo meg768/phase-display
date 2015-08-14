@@ -32,7 +32,7 @@ function enablePing() {
 		host: 'phi-display.herokuapp.com',
 		path: '/',
 		schedule: {
-			hour   : new schedule.Range(10, 23),
+			hour   : new schedule.Range(10, 20),
 			minute : new schedule.Range(0, 59, 15)
 		}
 	};
@@ -49,9 +49,9 @@ function enableQuotes() {
 	
 	var config = {
 		'schedule': {
-			'hour'   : new schedule.Range(9, 23, 1),
+			'hour'   : new schedule.Range(9, 18, 1),
 			'minute' : new schedule.Range(0, 59, 1),
-			'second' : new schedule.Range(0, 59, 15)
+			'second' : [10, 30, 50]
 		},
 		'quotes' : [
 			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' }
@@ -64,6 +64,7 @@ function enableQuotes() {
 		},
 		
 		'colors':  {
+			'price'   : 'white',
 			'plus'    : 'rgb(0, 255, 0)',
 			'minus'   : 'rgb(255, 0, 0)',
 			'volume'  : 'rgb(0, 0, 255)'
@@ -78,15 +79,15 @@ function enableQuotes() {
 
 		data.forEach(function(quote) {
 			var options = {};
-			options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
-			options.size     = config.font.size; //26;
+			options.font = config.font.name;
+			options.size = config.font.size;
 			
 			if (quote.logo != undefined)
 				display.image(quote.logo);
 			else
 				display.text(quote.name, options);
 
-			options.color = config.colors.currency;
+			options.color = config.colors.price;
 			display.text(sprintf('%.2f', quote.price), options);
 
 			options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
