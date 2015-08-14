@@ -41,105 +41,6 @@ function enablePing() {
 	var ping = new Ping(config);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
-
-/*
-function enableFinance() {
-	
-	var latestQuote = undefined;
-	
-	var config = {
-	
-		'rates' : [
-			{ 'name':'USD/SEK', 'symbol':'USDSEK' },
-			{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
-		],
-		
-		'quotes' : [
-			{ 'name':'Phase',  'symbol':'PHI.ST' }
-		]
-	};
-	
-	var Finance = require('./modules/finance');
-	var finance = new Finance(config);
-
-	function scheduleQuotes() {
-		var rule = new schedule.RecurrenceRule();		
-		
-		rule.minute = new schedule.Range(0, 59, 2);
-		rule.hour   = new schedule.Range(9, 17);
-	
-		finance.fetchQuotes();
-		
-		var job = schedule.scheduleJob(rule, function() {
-			finance.fetchQuotes();
-		});
-		
-	}
-	
-	function scheduleRates() {
-		var rule = new schedule.RecurrenceRule();		
-		
-		rule.minute = new schedule.Range(0, 59, 13);
-		rule.hour   = new schedule.Range(7, 23);
-	
-		var job = schedule.scheduleJob(rule, function() {
-			finance.fetchRates();
-		});
-		
-	}
-
-	function scheduleDisplayQuotes() {
-		var rule    = new schedule.RecurrenceRule();
-		rule.hour   = new schedule.Range(7, 23, 1);
-		rule.second = new schedule.Range(0, 59, 10);
-		
-		schedule.scheduleJob(rule, function() {
-			var display = new matrix.Display();
-			
-			display.image('images/phiab-logo.png');
-	
-			if (latestQuote != undefined) {
-				var options = {};
-				options.font     = 'Century-Gothic-Bold-Italic';
-				options.size     = 26;
-				
-				options.color = 'white';
-				display.text(sprintf('%.2f', latestQuote.price), options);
-
-				options.color = latestQuote.change >= 0 ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
-				display.text(sprintf('%s%.1f%%', latestQuote.change >= 0 ? '+' : '', latestQuote.change), options)
-
-				options.color = 'blue';
-				display.text(sprintf('%.1f MSEK', (latestQuote.volume * latestQuote.price) / 1000000.0), options);
-
-			}
-			
-			display.send({priority:'low'});
-		});			
-		
-	}	
-
-	finance.on('quote', function(name, symbol, price, change, volume) {
-		latestQuote = {
-			name:name,
-			symbol:symbol,
-			price:price,
-			volume:volume,
-			change:change
-		}
-	});
-
-	finance.on('rate', function(name, symbol, value) {
-		matrix.text(sprintf('%s %.2f', name, value), {color:'rgb(0,0,255)'});
-	});
-
-	scheduleQuotes();
-	scheduleRates();
-	scheduleDisplayQuotes();
-
-}
-*/
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -148,20 +49,12 @@ function enableQuotes() {
 	
 	var config = {
 		'schedule': {
-			'fetch': {
-				'hour'   : new schedule.Range(9, 23, 1),
-				'minute' : new schedule.Range(0, 59, 5),
-				'second' : undefined
-			},
-			'display': {
-				'hour'   : new schedule.Range(9, 23, 1),
-				'minute' : new schedule.Range(0, 59, 1),
-				'second' : new schedule.Range(0, 59, 10)
-			}
+			'hour'   : new schedule.Range(9, 23, 1),
+			'minute' : new schedule.Range(0, 59, 1),
+			'second' : new schedule.Range(0, 59, 15)
 		},
 		'quotes' : [
-			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' },
-			{ 'name':'H&M', 'symbol':'HM-B.ST' }
+			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' }
 
 		],
 		
@@ -179,69 +72,35 @@ function enableQuotes() {
 	
 	var Quotes = require('./modules/quotes.js');
 	var quotes = new Quotes(config);
-	var story  = [];
 
-	function scheduleFetch() {
-		var rule = new schedule.RecurrenceRule();		
-		
-		rule.hour   = config.schedule.fetch.hour;
-		rule.minute = config.schedule.fetch.minute;
-	
-		quotes.fetch();
-		
-		var job = schedule.scheduleJob(rule, function() {
-			quotes.fetch();
+	quotes.on('quotes', function(data) {
+		var display = new matrix.Display();
+
+		data.forEach(function(quote) {
+			var options = {};
+			options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
+			options.size     = config.font.size; //26;
+			
+			if (quote.logo != undefined)
+				display.image(quote.logo);
+			else
+				display.text(quote.name, options);
+
+			options.color = config.colors.currency;
+			display.text(sprintf('%.2f', quote.price), options);
+
+			options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
+			display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
+
+			options.color = config.colors.volume;
+			display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
+			
 		});
-		
-	}
-	
-	function scheduleDisplay() {
-		var rule    = new schedule.RecurrenceRule();
-		
-		rule.hour   = config.schedule.display.hour;
-		rule.minute = config.schedule.display.minute;
-		rule.second = config.schedule.display.second;
-		
-		schedule.scheduleJob(rule, function() {
-		
-			var display = new matrix.Display();
-	
-			for (var index in story) {
-				var quote = story[index];
-				
-				var options = {};
-				options.font     = config.font.name; //'Century-Gothic-Bold-Italic';
-				options.size     = config.font.size; //26;
-				
-				if (quote.logo != undefined)
-					display.image(quote.logo);
-				else
-					display.text(quote.name, options);
-
-				options.color = config.colors.currency;
-				display.text(sprintf('%.2f', quote.price), options);
-
-				options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
-				display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
-
-				options.color = config.colors.volume;
-				display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
-				
-			}
 			
-			display.send({priority:'low'});
-			
-			story = [];
-		});			
+		display.send({priority:'low'});
 		
-	}	
-
-	quotes.on('quote', function(data) {
-		story.push(data);
+		
 	});
-
-	scheduleFetch();
-	scheduleDisplay();
 
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -252,8 +111,7 @@ function enableRates() {
 	var config = {
 		'schedule': {
 			'hour'   : new schedule.Range(9, 23),
-			'minute' : new schedule.Range(0, 59, 1),
-			'second' : new schedule.Range(0, 59, 15)
+			'minute' : new schedule.Range(0, 59, 10),
 		},
 	
 		'rates' : [
@@ -272,34 +130,22 @@ function enableRates() {
 	var Rates = require('./modules/rates.js');
 	var rates = new Rates(config);
 
+	rates.on('rates', function(data) {
+		var display = new matrix.Display();
 
-	function init() {
-		var rule    = new schedule.RecurrenceRule();
-		rule.hour   = config.schedule.hour;
-		rule.minute = config.schedule.minute;
-		rule.second = config.schedule.second;
-	
-		var job = schedule.scheduleJob(rule, function() {
-			rates.fetch(function(data) {
-				var display = new matrix.Display();
-		
-				var options = {};
-				options.font     = config.font.name;
-				options.size     = config.font.size;
-				options.color    = config.font.color;
-		
-				data.forEach(function(rate) {
-					display.text(sprintf('%s %.2f', rate.name, rate.value), options);			
-				});
-		
-				display.send({priority:'low'});
-				
-			});
+		var options = {};
+		options.font     = config.font.name;
+		options.size     = config.font.size;
+		options.color    = config.font.color;
+
+		data.forEach(function(rate) {
+			display.text(sprintf('%s %.2f', rate.name, rate.value), options);			
 		});
-		
-	}
 
-	init();
+		display.send();
+		
+	});
+
 
 }
 
@@ -325,7 +171,7 @@ function enableMail() {
 			mail.subject = '';
 			
 		if (mail.headers && mail.headers['x-priority'] == 'high')
-			matrix.play('beep3.mp3');
+			matrix.play('beep.mp3');
 	
 		matrix.text(mail.subject + '\n' + mail.text);		
 	});
@@ -337,8 +183,8 @@ function enableWeather() {
 
 	var config = {
 		schedule: {
-			hour:   new schedule.Range(7, 23),
-			minute: [0, 10, 20, 30, 40, 50]
+			hour:   new schedule.Range(8, 21),
+			minute: [0, 15, 30, 45]
 		}
 	};
 	
@@ -366,7 +212,7 @@ function enableRSS() {
 			{name: 'Google', url: 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss'}
 		],
 		schedule: {
-			hour:   new schedule.Range(7, 23),
+			hour:   new schedule.Range(8, 21),
 			minute: new schedule.Range(0, 59, 20)
 		}
 
@@ -383,43 +229,14 @@ function enableRSS() {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 
-function test() {
-	var rule = new schedule.RecurrenceRule();		
-	
-	rule.second = new schedule.Range(0, 59, 5);
 
-	var job = schedule.scheduleJob(rule, function() {
-		
-		foo = [
-			{
-				type: 'text',
-				text: 'Hej',
-				color: 'yellow',
-				priority: 'low'
-				
-			},
-			{
-				type: 'image',
-				image: 'emoji/1.png',
-				priority: 'low'
-				
-			}
-		];
-		
-		matrix.emit('x-message', foo);
-	});
-		
-}
-
-
-//enableWeather();
-//enableQuotes();
+enableWeather();
+enableQuotes();
 enableRates();
-//enableMail();
-//enablePing();
-//enableRSS();
+enableMail();
+enablePing();
+enableRSS();
 
-//test();
 
 console.log('OK!');
 

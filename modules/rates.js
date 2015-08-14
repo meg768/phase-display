@@ -21,7 +21,7 @@ module.exports = function(config) {
 		return text;
 	}
 
-	self.fetch = function(callback) {
+	function fetch() {
 		
 		var rates = config.rates;
 		var symbols = [];
@@ -57,7 +57,7 @@ module.exports = function(config) {
 						data.push({name:names[item.id], symbol:item.id, value:parseFloat(item.Rate)});
 					});
 					
-					callback(data);
+					self.emit('rates', data);
 				}
 				else
 					throw new Error('Invalid status code');
@@ -70,10 +70,28 @@ module.exports = function(config) {
 		});
 	}
 	
+	function init() {
+		var rule  = new schedule.RecurrenceRule();
 	
-
+		if (config.schedule.hour != undefined)
+			rule.hour = config.schedule.hour;
+		
+		if (config.schedule.minute != undefined)
+			rule.minute = config.schedule.minute;
+		
+		if (config.schedule.second != undefined)
+			rule.second = config.schedule.second;
+	
+		schedule.scheduleJob(rule, function() {
+			fetch();	
+		});
+		
+	}
+	
+	init();
 	
 }
 
 
+util.inherits(module.exports, events.EventEmitter);
 

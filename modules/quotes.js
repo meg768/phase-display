@@ -22,7 +22,7 @@ module.exports = function(config) {
 	}
 
 	
-	self.fetch = function() {
+	function fetch() {
 		
 		var quotes = config.quotes;
 		var symbols = [];
@@ -53,10 +53,10 @@ module.exports = function(config) {
 					if (!util.isArray(results))
 						results = [results];
 	
-					for (var index in results) {
-						var result = results[index];
-						
-						var data  = {
+					var data = [];
+					
+					results.forEach(function(result) {
+						var item  = {
 							//name   : names[result.symbol], 
 							//symbol : result.symbol, 
 							price  : parseFloat(result.LastTradePriceOnly), 
@@ -65,13 +65,12 @@ module.exports = function(config) {
 							
 						};
 						
-						console.log('extending...', data);
-						data = extend(data, info[result.symbol]);
-						console.log('extending result:', data);
-						
+						item = extend(item, info[result.symbol]);
+						data.push(item);
 
-						self.emit('quote', data);
-					}
+					});
+					
+					self.emit('quotes', data);
 				}
 				else
 					throw new Error('Invalid status code');
@@ -84,12 +83,33 @@ module.exports = function(config) {
 		});
 	}
 	
+	function init() {
+		var rule  = new schedule.RecurrenceRule();
+	
+		if (config.schedule.hour != undefined)
+			rule.hour = config.schedule.hour;
+		
+		if (config.schedule.minute != undefined)
+			rule.minute = config.schedule.minute;
+		
+		if (config.schedule.second != undefined)
+			rule.second = config.schedule.second;
+	
+		schedule.scheduleJob(rule, function() {
+			fetch();	
+		});
+		
+	}
+	
+	init();
 
 	
 }
 
+util.inherits(module.exports, events.EventEmitter);
+
+
 
 	
-util.inherits(module.exports, events.EventEmitter);
 
 
