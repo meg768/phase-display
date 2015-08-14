@@ -11,17 +11,7 @@ var matrix   = require('./common/matrix.js');
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // Make sure Heroku doesn't put our process to sleep...
-function enablePing(config) {
-/*
-	var config = {
-		host: 'phi-display.herokuapp.com',
-		path: '/',
-		schedule: {
-			hour   : [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-			minute : [0, 15, 30, 45]
-		}
-	};
-*/
+function runPing(config) {
 
 	if (config.enabled) {
 		var Ping = require('./modules/ping.js');
@@ -33,33 +23,8 @@ function enablePing(config) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableQuotes(config) {
+function runQuotes(config) {
 	
-	/*
-	var config = {
-		'schedule': {
-			'hour'   : [9, 10, 11, 12, 13, 14, 15, 16, 17],
-			'minute' : new schedule.Range(0, 59, 1),
-			'second' : [10, 30, 50]
-		},
-		'quotes' : [
-			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' }
-
-		],
-		
-		'font' : {
-			'name': 'Century-Gothic-Bold-Italic',
-			'size': 26
-		},
-		
-		'colors':  {
-			'price'   : 'white',
-			'plus'    : 'rgb(0, 255, 0)',
-			'minus'   : 'rgb(255, 0, 0)',
-			'volume'  : 'rgb(0, 0, 255)'
-		}
-	};
-	*/
 	
 	if (config.enabled) {
 		var Quotes = require('./modules/quotes.js');
@@ -99,28 +64,7 @@ function enableQuotes(config) {
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableRates(config) {
-	
-	/*
-	var config = {
-		'schedule': {
-			'hour'   : [9, 10, 11, 12, 13, 14, 15, 16, 17],
-			'minute' : [0, 10 , 20, 30, 40, 50],
-		},
-	
-		'rates' : [
-			{ 'name':'USD/SEK', 'symbol':'USDSEK' },
-			{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
-		],
-		
-		'font' : {
-			'name'  : 'Century-Gothic-Bold-Italic',
-			'size'  : 26,
-			'color' : 'white'
-		}
-	
-	};
-	*/
+function runRates(config) {
 	
 
 	if (config.enabled) {
@@ -151,15 +95,7 @@ function enableRates(config) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableMail(config) {
-	
-	/*
-	var config = {
-		email    : 'phasedisplay@gmail.com',
-		password : 'P0tatismos'
-		
-	};
-	*/
+function runMail(config) {
 	
 	if (config.enabled) {
 		var Mail = require('./modules/mail.js');	
@@ -183,17 +119,9 @@ function enableMail(config) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableWeather(config) {
+function runWeather(config) {
 
-	/*
-	var config = {
-		schedule: {
-			hour:   [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-			minute: [5, 25, 45, 55]
-		}
-	};
-	*/
-	
+
 	if (config.enabled) {
 		var Weather = require('./modules/weather.js');
 		var weather = new Weather(config);
@@ -212,18 +140,8 @@ function enableWeather(config) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableClock(config) {
+function runClock(config) {
 
-
-	/*
-		var config = {
-		schedule: {
-			hour   : [18, 19, 20, 21],
-			minute : new schedule.Range(0, 59, 1)
-		}
-	};
-	*/
-	
 	if (config.enabled) {
 		var Clock = require('./modules/clock.js');
 		var clock = new Clock(config);
@@ -240,24 +158,8 @@ function enableClock(config) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableRSS(config) {
+function runRSS(config) {
 
-	/*
-	var config = {
-		feeds: [
-			{name: 'SvD',    url: 'http://www.svd.se/?service=rss&type=senastenytt'}, 
-			{name: 'SDS',    url: 'http://www.sydsvenskan.se/rss.xml'}, 
-			{name: 'Di',     url: 'http://www.di.se/rss'}, 
-			{name: 'Google', url: 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss'}
-		],
-		schedule: {
-			hour:   new schedule.Range(8, 21),
-			minute: new schedule.Range(0, 59, 20)
-		}
-
-	};
-	*/
-	
 	if (config.enabled) {
 		var RSS = require('./modules/rss.js');
 		var rss = new RSS(config);
@@ -281,7 +183,6 @@ function run() {
 	// Listen on port 5000
 	server.listen(process.env.PORT || 5000);
 	
-	
 	// We need to initialize the display...
 	matrix.init(server);
 	
@@ -291,17 +192,18 @@ function run() {
 	});
 	
 
-	enableClock(config.clock);
-	enableWeather(config.weather);
-	enableQuotes(config.quotes);
-	enableRates(config.rates);
-	enableMail(config.email);
-	enablePing(config.ping);
-	enableRSS(config.rss);
+	runClock(config.clock);
+	runWeather(config.weather);
+	runQuotes(config.quotes);
+	runRates(config.rates);
+	runMail(config.email);
+	runPing(config.ping);
+	runRSS(config.rss);
+
+	console.log('Ready!');
 
 }
 
 run();
-console.log('OK!');
 
 

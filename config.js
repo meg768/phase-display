@@ -3,7 +3,9 @@ var schedule = require('node-schedule');
 
 module.exports = {
 
-	'timezone' : 'Europe/Stockholm',
+	timezone : 'Europe/Stockholm',
+	
+	
 	
 	rss: {
 		enabled: true,
@@ -16,13 +18,14 @@ module.exports = {
 		],
 		schedule: {
 			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
-			minute: new schedule.Range(0, 59, 20)
+			minute : new schedule.Range(0, 59, 20)
 		}
 		
 	},
 	
 	clock: {
 		enabled: true,
+		
 		schedule: {
 			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
 			minute : new schedule.Range(0, 59, 1)
@@ -31,9 +34,10 @@ module.exports = {
 
 	weather: {
 		enabled: true,
+		
 		schedule: {
 			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
-			minute: [5, 25, 45, 55]
+			minute : [5, 25, 45, 55]
 		}
 		
 	},
@@ -65,8 +69,8 @@ module.exports = {
 		},
 	
 		rates : [
-			{ 'name':'USD/SEK', 'symbol':'USDSEK' },
-			{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
+			{ name:'USD/SEK', symbol:'USDSEK' },
+			{ name:'EUR/SEK', symbol:'EURSEK' }
 		],
 		
 		font : {
@@ -85,8 +89,9 @@ module.exports = {
 			minute : new schedule.Range(0, 59, 1),
 			second : [10, 30, 50]
 		},
+		
 		quotes : [
-			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' }
+			{ name:'Phase', symbol:'PHI.ST', logo : 'images/phiab-logo.png' }
 
 		],
 		
