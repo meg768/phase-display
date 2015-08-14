@@ -208,8 +208,7 @@ function enableClock() {
 	var config = {
 		schedule: {
 			hour   : [18, 19, 20, 21],
-			minute : new schedule.Range(0, 59, 1),
-			second : [5, 15, 25, 35, 45, 55],
+			minute : new schedule.Range(0, 59, 1)
 		}
 	};
 	
