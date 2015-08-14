@@ -32,8 +32,8 @@ function enablePing() {
 		host: 'phi-display.herokuapp.com',
 		path: '/',
 		schedule: {
-			hour   : new schedule.Range(10, 20),
-			minute : new schedule.Range(0, 59, 15)
+			hour   : [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+			minute : [0, 15, 30, 45]
 		}
 	};
 	
@@ -49,7 +49,7 @@ function enableQuotes() {
 	
 	var config = {
 		'schedule': {
-			'hour'   : new schedule.Range(9, 18, 1),
+			'hour'   : [9, 10, 11, 12, 13, 14, 15, 16, 17],
 			'minute' : new schedule.Range(0, 59, 1),
 			'second' : [10, 30, 50]
 		},
@@ -111,8 +111,8 @@ function enableRates() {
 	
 	var config = {
 		'schedule': {
-			'hour'   : new schedule.Range(9, 23),
-			'minute' : new schedule.Range(0, 59, 10),
+			'hour'   : [9, 10, 11, 12, 13, 14, 15, 16, 17],
+			'minute' : [0, 10 , 20, 30, 40, 50],
 		},
 	
 		'rates' : [
@@ -156,7 +156,6 @@ function enableRates() {
 function enableMail() {
 	
 	var config = {
-		//email    : 'phaseholographic@gmail.com',
 		email    : 'phiabdisplay@gmail.com',
 		password : 'potatismos'
 		
@@ -185,8 +184,8 @@ function enableWeather() {
 
 	var config = {
 		schedule: {
-			hour:   new schedule.Range(8, 21),
-			minute: [0, 15, 30, 45]
+			hour:   [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+			minute: [5, 25, 45, 55]
 		}
 	};
 	
@@ -198,6 +197,28 @@ function enableWeather() {
 		display.text(item.day, {color:'white'});
 		display.text(sprintf('%s %d° (%d°)', item.condition, item.high, item.low),{color:'blue'});
 		display.send();
+	});
+	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+function enableClock() {
+
+	var config = {
+		schedule: {
+			hour:   [18, 19, 20, 21],
+			minute: new schedule.Range(0, 59, 1)
+		}
+	};
+	
+	var Clock = require('./modules/clock.js');
+	var clock = new Clock(config);
+	
+	clock.on('time', function(date) {
+		var display = new matrix.Display();
+		display.text(sprintf('%02d:%02d', date.getHours(), date.getMinutes()), {color:'random'});
+		display.send({priority:'low'});
 	});
 	
 }
@@ -230,7 +251,8 @@ function enableRSS() {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-
+enableClock();
+/*
 
 enableWeather();
 enableQuotes();
@@ -238,7 +260,7 @@ enableRates();
 enableMail();
 enablePing();
 enableRSS();
-
+*/
 console.log('OK!');
 
 
