@@ -156,7 +156,7 @@ function enableRates() {
 function enableMail() {
 	
 	var config = {
-		email    : 'phiab.display@gmail.com',
+		email    : 'phaseholographic@gmail.com',
 		password : 'P0tatismos'
 		
 	};
@@ -237,7 +237,6 @@ enableRates();
 enableMail();
 enablePing();
 enableRSS();
-
 
 console.log('OK!');
 
