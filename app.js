@@ -253,7 +253,7 @@ function enableRates() {
 		'schedule': {
 			'hour'   : new schedule.Range(9, 23),
 			'minute' : new schedule.Range(0, 59, 1),
-			'minute' : new schedule.Range(0, 59, 10)
+			'second' : new schedule.Range(0, 59, 15)
 		},
 	
 		'rates' : [
@@ -273,33 +273,28 @@ function enableRates() {
 	var rates = new Rates(config);
 
 
-
-	rates.on('rates', function(data) {
-		var display = new matrix.Display();
-
-		var options = {};
-		options.font     = config.font.name;
-		options.size     = config.font.size;
-		options.color    = config.font.color;
-
-		data.forEach(function(rate) {
-			display.text(sprintf('%s %.2f', rate.name, rate.value), options);			
-		});
-
-		display.send({priority:'low'});
-		
-	});
-
 	function init() {
 		var rule    = new schedule.RecurrenceRule();
 		rule.hour   = config.schedule.hour;
 		rule.minute = config.schedule.minute;
 		rule.second = config.schedule.second;
 	
-		rates.fetch();
-		
 		var job = schedule.scheduleJob(rule, function() {
-			rates.fetch();
+			rates.fetch(function(data) {
+				var display = new matrix.Display();
+		
+				var options = {};
+				options.font     = config.font.name;
+				options.size     = config.font.size;
+				options.color    = config.font.color;
+		
+				data.forEach(function(rate) {
+					display.text(sprintf('%s %.2f', rate.name, rate.value), options);			
+				});
+		
+				display.send({priority:'low'});
+				
+			});
 		});
 		
 	}

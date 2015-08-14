@@ -21,7 +21,7 @@ module.exports = function(config) {
 		return text;
 	}
 
-	self.fetch = function() {
+	self.fetch = function(callback) {
 		
 		var rates = config.rates;
 		var symbols = [];
@@ -57,7 +57,7 @@ module.exports = function(config) {
 						data.push({name:names[item.id], symbol:item.id, value:parseFloat(item.Rate)});
 					});
 					
-					self.emit('rates', data);
+					callback(data);
 				}
 				else
 					throw new Error('Invalid status code');
@@ -75,8 +75,5 @@ module.exports = function(config) {
 	
 }
 
-
-	
-util.inherits(module.exports, events.EventEmitter);
 
 
