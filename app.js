@@ -189,7 +189,7 @@ function enableWeather() {
 		}
 	};
 	
-	var Weather = require('./modules/weather');
+	var Weather = require('./modules/weather.js');
 	var weather = new Weather(config);
 	
 	weather.on('forecast', function(item) {
@@ -219,7 +219,7 @@ function enableRSS() {
 
 	};
 
-	var RSS = require('./modules/rss');
+	var RSS = require('./modules/rss.js');
 	var rss = new RSS(config);
 
 	rss.on('feed', function(rss) {
@@ -232,7 +232,7 @@ function enableRSS() {
 
 
 enableWeather();
-enableQuotes();
+//enableQuotes();
 enableRates();
 enableMail();
 enablePing();
