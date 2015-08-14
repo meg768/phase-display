@@ -3,31 +3,16 @@ var app      = require('express')();
 var server   = require('http').Server(app);
 var schedule = require('node-schedule');
 
-var config   = require('./config');
 var sprintf  = require('./common/sprintf.js');
 var matrix   = require('./common/matrix.js');
 
 
-// Set the time zone according to config settings
-process.env.TZ = config.timezone;
-
-// Listen on port 5000
-server.listen(process.env.PORT || 5000);
-
-
-// We need to initialize the display...
-matrix.init(server);
-
-// Any request at the root level will return OK
-app.get('/', function (req, response) {
-	response.send("OK");
-});
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // Make sure Heroku doesn't put our process to sleep...
-function enablePing() {
-
+function enablePing(config) {
+/*
 	var config = {
 		host: 'phi-display.herokuapp.com',
 		path: '/',
@@ -36,17 +21,21 @@ function enablePing() {
 			minute : [0, 15, 30, 45]
 		}
 	};
-	
-	var Ping = require('./modules/ping.js');
-	var ping = new Ping(config);
+*/
+
+	if (config.enabled) {
+		var Ping = require('./modules/ping.js');
+		var ping = new Ping(config);
+		
+	}	
 }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableQuotes() {
+function enableQuotes(config) {
 	
-	
+	/*
 	var config = {
 		'schedule': {
 			'hour'   : [9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -70,45 +59,49 @@ function enableQuotes() {
 			'volume'  : 'rgb(0, 0, 255)'
 		}
 	};
+	*/
 	
-	var Quotes = require('./modules/quotes.js');
-	var quotes = new Quotes(config);
-
-	quotes.on('quotes', function(data) {
-		var display = new matrix.Display();
-
-		data.forEach(function(quote) {
-			var options = {};
-			options.font = config.font.name;
-			options.size = config.font.size;
+	if (config.enabled) {
+		var Quotes = require('./modules/quotes.js');
+		var quotes = new Quotes(config);
+	
+		quotes.on('quotes', function(data) {
+			var display = new matrix.Display();
+	
+			data.forEach(function(quote) {
+				var options = {};
+				options.font = config.font.name;
+				options.size = config.font.size;
+				
+				if (quote.logo != undefined)
+					display.image(quote.logo);
+				else
+					display.text(quote.name, options);
+	
+				options.color = config.colors.price;
+				display.text(sprintf('%.2f', quote.price), options);
+	
+				options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
+				display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
+	
+				options.color = config.colors.volume;
+				display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
+				
+			});
+				
+			display.send({priority:'low'});
 			
-			if (quote.logo != undefined)
-				display.image(quote.logo);
-			else
-				display.text(quote.name, options);
-
-			options.color = config.colors.price;
-			display.text(sprintf('%.2f', quote.price), options);
-
-			options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
-			display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
-
-			options.color = config.colors.volume;
-			display.text(sprintf('%.1f MSEK', (quote.volume * quote.price) / 1000000.0), options);
 			
 		});
-			
-		display.send({priority:'low'});
 		
-		
-	});
+	}
 
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableRates() {
+function enableRates(config) {
 	
-	
+	/*
 	var config = {
 		'schedule': {
 			'hour'   : [9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -127,25 +120,30 @@ function enableRates() {
 		}
 	
 	};
+	*/
 	
-	var Rates = require('./modules/rates.js');
-	var rates = new Rates(config);
 
-	rates.on('rates', function(data) {
-		var display = new matrix.Display();
-
-		var options = {};
-		options.font     = config.font.name;
-		options.size     = config.font.size;
-		options.color    = config.font.color;
-
-		data.forEach(function(rate) {
-			display.text(sprintf('%s %.2f', rate.name, rate.value), options);			
+	if (config.enabled) {
+		var Rates = require('./modules/rates.js');
+		var rates = new Rates(config);
+	
+		rates.on('rates', function(data) {
+			var display = new matrix.Display();
+	
+			var options = {};
+			options.font     = config.font.name;
+			options.size     = config.font.size;
+			options.color    = config.font.color;
+	
+			data.forEach(function(rate) {
+				display.text(sprintf('%s %.2f', rate.name, rate.value), options);			
+			});
+	
+			display.send();
+			
 		});
-
-		display.send();
 		
-	});
+	}
 
 
 }
@@ -153,81 +151,98 @@ function enableRates() {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableMail() {
+function enableMail(config) {
 	
+	/*
 	var config = {
 		email    : 'phasedisplay@gmail.com',
 		password : 'P0tatismos'
 		
 	};
+	*/
 	
-	var Mail = require('./modules/mail.js');	
-	var mail = new Mail(config);
-	
-	mail.on('mail', function(mail) {
-		if (mail.text == undefined)
-			mail.text = '';
-			
-		if (mail.subject == undefined)
-			mail.subject = '';
-			
-		if (mail.headers && mail.headers['x-priority'] == 'high')
-			matrix.play('beep.mp3');
-	
-		matrix.text(mail.subject + '\n' + mail.text);		
-	});
+	if (config.enabled) {
+		var Mail = require('./modules/mail.js');	
+		var mail = new Mail(config);
+		
+		mail.on('mail', function(mail) {
+			if (mail.text == undefined)
+				mail.text = '';
+				
+			if (mail.subject == undefined)
+				mail.subject = '';
+				
+			if (mail.headers && mail.headers['x-priority'] == 'high')
+				matrix.play('beep.mp3');
+		
+			matrix.text(mail.subject + '\n' + mail.text);		
+		});
+		
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableWeather() {
+function enableWeather(config) {
 
+	/*
 	var config = {
 		schedule: {
 			hour:   [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 			minute: [5, 25, 45, 55]
 		}
 	};
+	*/
 	
-	var Weather = require('./modules/weather.js');
-	var weather = new Weather(config);
-	
-	weather.on('forecast', function(item) {
-		var display = new matrix.Display();
-		display.text(item.day, {color:'white'});
-		display.text(sprintf('%s %d° (%d°)', item.condition, item.high, item.low),{color:'blue'});
-		display.send();
-	});
+	if (config.enabled) {
+		var Weather = require('./modules/weather.js');
+		var weather = new Weather(config);
+		
+		weather.on('forecast', function(item) {
+			var display = new matrix.Display();
+			display.text(item.day, {color:'white'});
+			display.text(sprintf('%s %d° (%d°)', item.condition, item.high, item.low),{color:'blue'});
+			display.send();
+		});
+		
+	}	
 	
 }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableClock() {
+function enableClock(config) {
 
-	var config = {
+
+	/*
+		var config = {
 		schedule: {
 			hour   : [18, 19, 20, 21],
 			minute : new schedule.Range(0, 59, 1)
 		}
 	};
+	*/
 	
-	var Clock = require('./modules/clock.js');
-	var clock = new Clock(config);
-	
-	clock.on('time', function(date) {
-		var display = new matrix.Display();
-		display.text(sprintf('%02d:%02d', date.getHours(), date.getMinutes()), {color:'random'});
-		display.send({priority:'low'});
-	});
+	if (config.enabled) {
+		var Clock = require('./modules/clock.js');
+		var clock = new Clock(config);
+		
+		clock.on('time', function(date) {
+			var display = new matrix.Display();
+			display.text(sprintf('%02d:%02d', date.getHours(), date.getMinutes()), {color:'random'});
+			display.send({priority:'low'});
+		});
+		
+	}
 	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-function enableRSS() {
+function enableRSS(config) {
 
+	/*
 	var config = {
 		feeds: [
 			{name: 'SvD',    url: 'http://www.svd.se/?service=rss&type=senastenytt'}, 
@@ -241,25 +256,52 @@ function enableRSS() {
 		}
 
 	};
+	*/
+	
+	if (config.enabled) {
+		var RSS = require('./modules/rss.js');
+		var rss = new RSS(config);
+	
+		rss.on('feed', function(rss) {
+			matrix.text(sprintf('%s - %s - %s', rss.name, rss.category, rss.text));
+		});
+		
+	}
 
-	var RSS = require('./modules/rss.js');
-	var rss = new RSS(config);
-
-	rss.on('feed', function(rss) {
-		matrix.text(sprintf('%s - %s - %s', rss.name, rss.category, rss.text));
-	});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-enableClock();
-enableWeather();
-enableQuotes();
-enableRates();
-enableMail();
-enablePing();
-enableRSS();
+function run() {
+	var config = require('./config');
+	
+	// Set the time zone according to config settings
+	process.env.TZ = config.timezone;
+	
+	// Listen on port 5000
+	server.listen(process.env.PORT || 5000);
+	
+	
+	// We need to initialize the display...
+	matrix.init(server);
+	
+	// Any request at the root level will return OK
+	app.get('/', function (req, response) {
+		response.send("OK");
+	});
+	
 
+	enableClock(config.clock);
+	enableWeather(config.weather);
+	enableQuotes(config.quotes);
+	enableRates(config.rates);
+	enableMail(config.email);
+	enablePing(config.ping);
+	enableRSS(config.rss);
+
+}
+
+run();
 console.log('OK!');
 
 

@@ -1,45 +1,106 @@
+var schedule = require('node-schedule');
 
 
 module.exports = {
 
 	'timezone' : 'Europe/Stockholm',
 	
-	'server'   : 'phi-display.herokuapp.com',
-	
-	'quotes'   : [
-/*		{ 'name':'AT&T', 'symbol':'T' },
-		{ 'name':'Ares Capital', 'symbol':'ARCC' },
-		{ 'name':'Castellum', 'symbol':'CAST.ST' },
-		{ 'name':'H&M', 'symbol':'HM-B.ST' },
-		{ 'name':'NCC', 'symbol':'NCC-B.ST' },
-		{ 'name':'Industrivärlden', 'symbol':'INDU-C.ST' },
-		{ 'name':'Pfizer', 'symbol':'PFE' },
-		{ 'name':'SHB', 'symbol':'SHB-B.ST' },
-		*/
-		{ 'name':'PHI',  'symbol':'PHI.ST' }
-	],
-	
-	'rates' : [
-		{ 'name':'USD/SEK', 'symbol':'USDSEK' },
-		{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
-	],
-
-	
-	
-	'twitter'  : {
-		'consumer_key'        : 'RMvVK1wDXgftuFqVwMZA1OmEG',
-		'consumer_secret'     : 'OlS3UoAMA48ZEWT8Ia2cYYTpZZRWNexBVzfhK84i93BXM1wDpK',
-		'access_token'        : '1241291215-fKIUjhl3LVRO9KHukvb23Srcc4rsD9y4J22ErsL',
-		'access_token_secret' : 'lECypLbF3bTOd9r09uydHKUffuSS1zF8DgtTMfaGAHtWP'			
-	},
-	
-	'googleTalk' : {
-		'username' : 'golvettippar@gmail.com',
-		'password' : 'potatismos'
-	},
-	
-	'rss': {
+	rss: {
+		enabled: true,
 		
-	}
+		feeds: [
+			{name: 'SvD',    url: 'http://www.svd.se/?service=rss&type=senastenytt'}, 
+			{name: 'SDS',    url: 'http://www.sydsvenskan.se/rss.xml'}, 
+			{name: 'Di',     url: 'http://www.di.se/rss'}, 
+			{name: 'Google', url: 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss'}
+		],
+		schedule: {
+			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			minute: new schedule.Range(0, 59, 20)
+		}
+		
+	},
+	
+	clock: {
+		enabled: true,
+		schedule: {
+			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			minute : new schedule.Range(0, 59, 1)
+		}		
+	},
+
+	weather: {
+		enabled: true,
+		schedule: {
+			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			minute: [5, 25, 45, 55]
+		}
+		
+	},
+
+	email: {
+		enabled  : true,
+		email    : 'phasedisplay@gmail.com',
+		password : 'P0tatismos'
+		
+	},
+
+	ping: {
+		enabled  : true,
+		
+		schedule : {
+			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			minute : [0, 15, 30, 45]
+		},
+		host     : 'phi-display.herokuapp.com',
+		path     : '/'
+	},
+	
+	rates: {
+		enabled: true,
+		
+		schedule: {
+			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			minute : [0, 10 , 20, 30, 40, 50],
+		},
+	
+		rates : [
+			{ 'name':'USD/SEK', 'symbol':'USDSEK' },
+			{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
+		],
+		
+		font : {
+			name  : 'Century-Gothic-Bold-Italic',
+			size  : 26,
+			color : 'white'
+		}
+		
+	},
+
+	quotes: {
+		enabled : true,
+
+		schedule: {
+			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			minute : new schedule.Range(0, 59, 1),
+			second : [10, 30, 50]
+		},
+		quotes : [
+			{ 'name':'Phase', 'symbol':'PHI.ST', 'logo' : 'images/phiab-logo.png' }
+
+		],
+		
+		font : {
+			name: 'Century-Gothic-Bold-Italic',
+			size: 26
+		},
+		
+		colors:  {
+			price   : 'white',
+			plus    : 'rgb(0, 255, 0)',
+			minus   : 'rgb(255, 0, 0)',
+			volume  : 'rgb(0, 0, 255)'
+		}
+	},
 };
 
