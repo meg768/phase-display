@@ -17,7 +17,7 @@ module.exports = {
 			{name: 'Google', url: 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss'}
 		],
 		schedule: {
-			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
 			minute : new schedule.Range(0, 59, 20)
 		}
 		
@@ -31,7 +31,7 @@ module.exports = {
 		},
 		
 		schedule: {
-			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
 			minute : new schedule.Range(0, 59, 1)
 		}		
 	},
@@ -40,7 +40,7 @@ module.exports = {
 		enabled: true,
 		
 		schedule: {
-			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
 			minute : [5, 25, 45, 55]
 		}
 		
@@ -57,7 +57,7 @@ module.exports = {
 		enabled  : true,
 		
 		schedule : {
-			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
 			minute : [0, 15, 30, 45]
 		},
 		
@@ -69,7 +69,7 @@ module.exports = {
 		enabled: true,
 		
 		schedule: {
-			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17],
+			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
 			minute : [0, 10 , 20, 30, 40, 50],
 		},
 	
@@ -90,7 +90,7 @@ module.exports = {
 		enabled : true,
 
 		schedule: {
-			hour   : [9, 10, 11, 12, 13, 14, 15, 16, 17],
+			hour   : [8, 10, 11, 12, 13, 14, 15, 16, 17],
 			minute : new schedule.Range(0, 59, 1),
 			second : [10, 30, 50]
 		},
