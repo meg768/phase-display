@@ -51,7 +51,7 @@ module.exports = {
 	email: {
 		enabled  : true,
 		email    : 'phasedisplay@gmail.com',
-		password : 'P0tatismos'
+		password : 'P0tatismos',
 		
 		font: {
 			color: 'green'
