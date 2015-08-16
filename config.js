@@ -7,8 +7,8 @@ module.exports = {
 	
 	matrix: {
 		text: {
-			name: 'Arial',
-			size: 16,
+			name: 'Verdana',
+			size: 14,
 			color: 'yellow'
 		}
 	},

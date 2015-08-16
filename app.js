@@ -2,6 +2,7 @@
 var app      = require('express')();
 var server   = require('http').Server(app);
 var schedule = require('node-schedule');
+var extend   = require('extend');
 
 var sprintf  = require('./common/sprintf.js');
 var matrix   = require('./common/matrix.js');
@@ -33,8 +34,10 @@ function runQuotes(config) {
 	
 			data.forEach(function(quote) {
 				var options = {};
-				options.font = config.font.name;
-				options.size = config.font.size;
+				
+				extend(options, config.font);
+				//options.font = config.font.name;
+				//options.size = config.font.size;
 				
 				if (quote.logo != undefined)
 					display.image(quote.logo);
@@ -74,10 +77,14 @@ function runRates(config) {
 			var display = new matrix.Display();
 	
 			var options = {};
+			
+			extend(options, config.font);
+			/*
 			options.font     = config.font.name;
 			options.size     = config.font.size;
 			options.color    = config.font.color;
-	
+			*/
+			
 			data.forEach(function(rate) {
 				display.text(sprintf('%s %.2f', rate.name, rate.value), options);			
 			});
