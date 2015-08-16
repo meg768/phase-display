@@ -9,7 +9,7 @@ module.exports = {
 		text: {
 			font : 'Century-Gothic-Bold-Italic',
 			size : 26,
-			color: 'purpule'
+			color: 'yellow'
 		}
 	},
 	
@@ -34,7 +34,8 @@ module.exports = {
 		
 		schedule: {
 			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-			minute : new schedule.Range(0, 59, 1)
+			minute : new schedule.Range(0, 59, 1),
+			second : new schedule.Range(0, 59, 10)
 		}		
 	},
 
