@@ -163,6 +163,11 @@ function main() {
 					args.push('-h');
 					args.push(msg.hold);
 				}
+
+				if (msg.delay != undefined) {
+					args.push('-d');
+					args.push(msg.delay);			
+				}
 				
 				commands.push({command:command, args:args, options:options, priority:msg.priority});
 								
@@ -182,6 +187,11 @@ function main() {
 				if (msg.hold != undefined) {
 					args.push('-h');
 					args.push(msg.hold);
+				}
+
+				if (msg.delay != undefined) {
+					args.push('-d');
+					args.push(msg.delay);			
 				}
 				
 				commands.push({command:command, args:args, options:options, priority:msg.priority});

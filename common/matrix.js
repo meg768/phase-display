@@ -57,11 +57,8 @@ Matrix.Display = function() {
 			options = {};
 			
 		var msg = {};
+		extend(msg, config.matrix.image, options, {type:'image', image:image});
 
-		msg.type  = 'image';
-		msg.image = image;
-		msg.hold  = options.hold;
-		
 		_messages.push(msg);	
 	}
 
@@ -70,11 +67,8 @@ Matrix.Display = function() {
 			options = {};
 			
 		var msg = {};
+		extend(msg, config.matrix.emoji, options, {type:'emoji', id:id});
 
-		msg.type  = 'emoji';
-		msg.id    = id;
-		msg.hold  = options.hold;
-		
 		_messages.push(msg);	
 	}
 	

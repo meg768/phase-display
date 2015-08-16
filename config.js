@@ -7,10 +7,16 @@ module.exports = {
 	
 	matrix: {
 		text: {
-			font : 'Century-Gothic-Bold-Italic',
-			size : 24,
-			color: 'blue',
-			delay: 15
+			font  : 'Century-Gothic-Bold-Italic',
+			size  : 24,
+			color : 'blue',
+			delay : 15
+		},
+		image: {
+			delay : 15
+		},
+		emoji: {
+			delay : 15
 		}
 	},
 	
