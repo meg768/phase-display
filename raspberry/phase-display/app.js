@@ -276,7 +276,7 @@ function main() {
 			});
 			messages.push({
 				type: 'text',
-				text: wlan0 + '****',
+				text: wlan0 + '*MEB**',
 				color: 'blue'
 			});
 		}
