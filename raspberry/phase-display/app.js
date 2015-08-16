@@ -276,7 +276,7 @@ function main() {
 			});
 			messages.push({
 				type: 'text',
-				text: wlan0 + '*MEBNUS**',
+				text: wlan0 + '*XXX**',
 				color: 'blue'
 			});
 		}
