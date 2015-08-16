@@ -2,9 +2,9 @@
   "name": "node-js-getting-started",
   "version": "0.1.2",
   "description": "A sample Node.js app using Express 4",
-  "main": "app.js",
+  "main": "heroku/app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node heroku/app.js"
   },
   "dependencies": {
     "body-parser": "~1.10.1",
