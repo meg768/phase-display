@@ -138,6 +138,11 @@ function main() {
 					args.push('-s');
 					args.push(msg.size);			
 				}
+
+				if (msg.delay != undefined) {
+					args.push('-d');
+					args.push(msg.delay);			
+				}
 				
 				commands.push({command:command, args:args, options:options, priority:msg.priority});
 								
