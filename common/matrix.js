@@ -170,9 +170,9 @@ Matrix.image = function(image, options) {
 	display.send();
 }
 
-Matrix.emoji = function() {
+Matrix.emoji = function(id, options) {
 
 	var display = new Matrix.Display();
-	display.image(arguments);
+	display.emoji(id, options);
 	display.send();
 }
