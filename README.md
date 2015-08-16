@@ -10,7 +10,6 @@ The root directory is the server node application. Deploy it to Heroku by typing
 	$ git push heroku master
 	
    
-The **raspberry** folder
 
 
 
