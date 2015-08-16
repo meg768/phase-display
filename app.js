@@ -146,7 +146,7 @@ function runClock(config) {
 		
 		clock.on('time', function(date) {
 			var display = new matrix.Display();
-			display.text(sprintf('%02d:%02d', date.getHours(), date.getMinutes()), {color:'random'});
+			display.text(sprintf('%02d:%02d', date.getHours(), date.getMinutes()), {color:'blue'});
 			display.send({priority:'low'});
 		});
 		
