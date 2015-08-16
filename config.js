@@ -9,7 +9,8 @@ module.exports = {
 		text: {
 			font : 'Century-Gothic-Bold-Italic',
 			size : 24,
-			color: 'green'
+			color: 'green',
+			delay: 10
 		}
 	},
 	
@@ -55,7 +56,7 @@ module.exports = {
 		password : 'P0tatismos',
 		
 		font: {
-			color: 'green'
+			color: 'red'
 		}
 	},
 
