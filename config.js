@@ -9,8 +9,8 @@ module.exports = {
 		text: {
 			font : 'Century-Gothic-Bold-Italic',
 			size : 24,
-			color: 'green',
-			delay: 10
+			color: 'blue',
+			delay: 15
 		}
 	},
 	
