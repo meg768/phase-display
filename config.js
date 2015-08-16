@@ -10,7 +10,7 @@ module.exports = {
 			font : 'Century-Gothic-Bold-Italic',
 			size : 24,
 			color: 'green',
-			delay: 10∫
+			delay: 10
 		}
 	},
 	
