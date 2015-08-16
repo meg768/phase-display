@@ -107,8 +107,7 @@ Matrix.init = function(server) {
 		var now = new Date();
 		var display = new Matrix.Display();
 		
-		display.emoji(435, {hold:4});
-		display.image('images/phiab-logo.png');
+		display.emoji(729, {hold:4});
 		display.send();
 	});
 	
