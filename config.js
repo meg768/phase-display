@@ -61,7 +61,7 @@ module.exports = {
 			minute : [0, 15, 30, 45]
 		},
 		
-		host     : 'phi-display.herokuapp.com',
+		host     : 'phase-display.herokuapp.com',
 		path     : '/'
 	},
 	
