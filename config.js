@@ -1,21 +1,46 @@
-var schedule = require('node-schedule');
 
+
+// Function to generate an array of integers between a range...	
+function range(start, stop, step) {
+	
+	var values = [];
+	
+	if (step == undefined)
+		step = 1;
+		
+	for (var i = start; i <= stop; i += step)
+		values.push(i);
+		
+	return values;
+	
+}
 
 module.exports = {
 
 	timezone : 'Europe/Stockholm',
+
 	
+	// Defaults for the display
 	matrix: {
 		text: {
+			// The default font used when not specified
 			font  : 'Century-Gothic-Bold-Italic',
+			
+			// ... and size
 			size  : 24,
+			
+			// .. and color ('random' may also be used)
 			color : 'blue',
+			
+			// Default delay when scrolling
 			delay : 15
 		},
 		image: {
+			// Default scroll speed
 			delay : 15
 		},
 		emoji: {
+			// Default scroll speed
 			delay : 15
 		}
 	},
@@ -29,9 +54,13 @@ module.exports = {
 			{name: 'Di',     url: 'http://www.di.se/rss'}, 
 			{name: 'Google', url: 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss'}
 		],
+		
 		schedule: {
-			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-			minute : new schedule.Range(0, 59, 20)
+			// Display from 8-21
+			hour : range(8, 21),
+
+			// Display RSS news every 20 minutes
+			minute : range(0, 59, 20)
 		}
 		
 	},
@@ -40,9 +69,9 @@ module.exports = {
 		enabled: true,
 		
 		schedule: {
-			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-			minute : new schedule.Range(0, 59, 1),
-			second : new schedule.Range(0, 59, 10)
+			hour   : range(8, 21),
+			minute : range(0, 59, 1),
+			second : range(0, 59, 10)
 		}		
 	},
 
@@ -50,8 +79,8 @@ module.exports = {
 		enabled: true,
 		
 		schedule: {
-			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-			minute : [5, 25, 45, 55]
+			hour   : range(8, 21),
+			minute : range(5, 59, 5)
 		}
 		
 	},
@@ -70,8 +99,8 @@ module.exports = {
 		enabled  : true,
 		
 		schedule : {
-			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-			minute : [0, 15, 30, 45]
+			hour   : range(8, 21),
+			minute : range(0, 59, 15)
 		},
 		
 		host     : 'phase-display.herokuapp.com',
@@ -82,8 +111,8 @@ module.exports = {
 		enabled: true,
 		
 		schedule: {
-			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-			minute : [0, 10 , 20, 30, 40, 50],
+			hour   : range(8, 21),
+			minute : range(0, 59, 10),
 		},
 	
 		rates : [
@@ -92,6 +121,7 @@ module.exports = {
 		],
 		
 		font : {
+			color: 'green'
 		}
 		
 	},
@@ -100,9 +130,9 @@ module.exports = {
 		enabled : true,
 
 		schedule: {
-			hour   : [8, 10, 11, 12, 13, 14, 15, 16, 17],
-			minute : new schedule.Range(0, 59, 1),
-			second : [10, 30, 50]
+			hour   : range(8, 17),
+			minute : range(0, 59),
+			second : range(10, 59, 20)
 		},
 		
 		quotes : [

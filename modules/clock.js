@@ -24,7 +24,6 @@ module.exports = function(config) {
 		schedule.scheduleJob(rule, function() {
 			self.emit('time', new Date());
 		});
-		
 	}
 	
 	init();
