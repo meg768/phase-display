@@ -15,6 +15,7 @@ function range(start, stop, step) {
 	
 }
 
+
 module.exports = {
 
 	timezone : 'Europe/Stockholm',
@@ -69,7 +70,7 @@ module.exports = {
 		enabled: true,
 		
 		schedule: {
-			hour   : range(8, 21),
+			hour   : range(8, 22),
 			minute : range(0, 59, 1),
 			second : range(0, 59, 10)
 		}		
