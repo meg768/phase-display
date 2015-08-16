@@ -36,8 +36,6 @@ function runQuotes(config) {
 				var options = {};
 				
 				extend(options, config.font);
-				//options.font = config.font.name;
-				//options.size = config.font.size;
 				
 				if (quote.logo != undefined)
 					display.image(quote.logo);
@@ -76,14 +74,8 @@ function runRates(config) {
 		rates.on('rates', function(data) {
 			var display = new matrix.Display();
 	
-			var options = {};
-			
+			var options = {};			
 			extend(options, config.font);
-			/*
-			options.font     = config.font.name;
-			options.size     = config.font.size;
-			options.color    = config.font.color;
-			*/
 			
 			data.forEach(function(rate) {
 				display.text(sprintf('%s %.2f', rate.name, rate.value), options);			
@@ -116,7 +108,7 @@ function runMail(config) {
 			if (mail.headers && mail.headers['x-priority'] == 'high')
 				matrix.play('beep.mp3');
 		
-			matrix.text(mail.subject + '\n' + mail.text);		
+			matrix.text(mail.subject + '\n' + mail.text, config.font);		
 		});
 		
 	}
@@ -153,7 +145,7 @@ function runClock(config) {
 		
 		clock.on('time', function(date) {
 			var display = new matrix.Display();
-			display.text(sprintf('%02d:%02d', date.getHours(), date.getMinutes()), {color:'blue'});
+			display.text(sprintf('%02d:%02d', date.getHours(), date.getMinutes()));
 			display.send({priority:'low'});
 		});
 		

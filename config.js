@@ -7,9 +7,9 @@ module.exports = {
 	
 	matrix: {
 		text: {
-			name: 'Verdana',
-			size: 14,
-			color: 'yellow'
+			name : 'Century-Gothic-Bold-Italic',
+			size : 26,
+			color: 'purpule'
 		}
 	},
 	
@@ -32,10 +32,6 @@ module.exports = {
 	clock: {
 		enabled: true,
 		
-		font: {
-			color: 'blue'
-		},
-		
 		schedule: {
 			hour   : [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
 			minute : new schedule.Range(0, 59, 1)
@@ -57,6 +53,9 @@ module.exports = {
 		email    : 'phasedisplay@gmail.com',
 		password : 'P0tatismos'
 		
+		font: {
+			color: 'green'
+		}
 	},
 
 	ping: {
@@ -85,9 +84,6 @@ module.exports = {
 		],
 		
 		font : {
-			name  : 'Century-Gothic-Bold-Italic',
-			size  : 26,
-			color : 'white'
 		}
 		
 	},
@@ -107,7 +103,6 @@ module.exports = {
 		],
 		
 		font : {
-			name: 'Century-Gothic-Bold-Italic',
 			size: 26
 		},
 		
