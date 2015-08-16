@@ -14,17 +14,6 @@ Matrix.Display = function() {
 	
 	var self = this;
 	
-	var _default = {
-		text: {
-			font: 'Century-Gothic-Bold-Italic',
-			size: 22,
-			color: 'rgb(255,0,0)'
-		},
-		image: {
-			
-		}
-		
-	};
 	
 	var _messages = [];
 	
@@ -44,17 +33,7 @@ Matrix.Display = function() {
 	
 		if (options == undefined)
 			options = {};
-			
-/*
-		if (options.size == undefined)
-			options.size = config.defaultFont.size;
-			
-		if (options.font == undefined)
-			options.font = _default.text.font;
 
-		if (options.color == undefined)
-			options.color = _default.text.color;
-*/			
 		text = text.replace(/(\r\n|\n|\r)/gm, '\n');
 		text = text.replace('\t',' ');
 		
@@ -65,15 +44,8 @@ Matrix.Display = function() {
 			 
 			if (text.length > 0) {
 				var msg = {};
-				
 				extend(msg, config.matrix.text, options, {type:'text', text:text});
-				/*
-				msg.type  = 'text';
-				msg.text  = text;
-				msg.color = options.color;
-				msg.font  = options.font;
-				msg.size  = options.size;
-				*/
+				
 				_messages.push(msg);
 			}
 		}
