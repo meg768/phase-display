@@ -1,7 +1,7 @@
 var schedule = require('node-schedule');
-var util = require('util');
-var sprintf = require('./sprintf.js');
-var random = require('./random.js');
+var util     = require('util');
+var sprintf  = require('./sprintf.js');
+var random   = require('./random.js');
 
 
 // { "command": "python", "options": {"cwd":"python"}, "args": ["run-text.py", "-t", "HEJ", "-c", "blue"]}
@@ -276,7 +276,7 @@ function main() {
 			});
 			messages.push({
 				type: 'text',
-				text: wlan0,
+				text: wlan0 + '*',
 				color: 'blue'
 			});
 		}
