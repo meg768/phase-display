@@ -171,7 +171,7 @@ function main() {
 
 				if (msg.id != undefined) {
 					args.push('-f');
-					args.push('emoji/' + parseInt(msg.id) + '.png');
+					args.push('emojis/' + parseInt(msg.id) + '.png');
 				}
 				
 				if (msg.hold != undefined) {

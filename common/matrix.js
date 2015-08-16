@@ -31,11 +31,6 @@ Matrix.Display = function() {
 		
 		var msg = {};
 		
-		msg.command   = 'omxplayer';
-		msg.args      = ['--no-keys', '--no-osd', 'audio/' + sound];
-		msg.options   = {cwd: 'python'};
-
-		msg = {};
 		msg.type  = 'audio';
 		msg.sound = sound;
 
@@ -66,21 +61,6 @@ Matrix.Display = function() {
 			 
 			if (text.length > 0) {
 				var msg = {};
-				
-				msg.command   = 'python';
-				msg.args      = ['run-text.py', '-t', text];
-				msg.options   = {cwd: 'python'};
-
-				msg.args.push('-c');
-				msg.args.push(options.color);
-
-				msg.args.push('-f');
-				msg.args.push(options.font);
-
-				msg.args.push('-s');
-				msg.args.push(sprintf('%s', parseInt(options.size)));
-	
-				msg = {};
 				msg.type  = 'text';
 				msg.text  = text;
 				msg.color = options.color;
@@ -98,17 +78,7 @@ Matrix.Display = function() {
 			options = {};
 			
 		var msg = {};
-		
-		msg.command   = 'python';
-		msg.args      = ['run-image.py', '-f', image];
-		msg.options   = {cwd: 'python'};
 
-		if (options.hold != undefined) {
-			msg.args.push('-h');
-			msg.args.push(options.hold);		
-		}
-		
-		msg = {};
 		msg.type  = 'image';
 		msg.image = image;
 		msg.hold  = options.hold;
@@ -116,8 +86,17 @@ Matrix.Display = function() {
 		_messages.push(msg);	
 	}
 
-	self.emoji = function(number, options) {
-		self.image(sprintf('emoji/%d.png', number), options);
+	self.emoji = function(id, options) {
+		if (options == undefined)
+			options = {};
+			
+		var msg = {};
+
+		msg.type  = 'emoji';
+		msg.id    = id;
+		msg.hold  = options.hold;
+		
+		_messages.push(msg);	
 	}
 	
 
