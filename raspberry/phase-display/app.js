@@ -276,7 +276,7 @@ function main() {
 			});
 			messages.push({
 				type: 'text',
-				text: wlan0 + '*XXX**',
+				text: wlan0,
 				color: 'blue'
 			});
 		}
