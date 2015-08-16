@@ -312,9 +312,8 @@ function main() {
 		if (messages.length == 0) {
 			messages.push({
 				type: 'emoji',
-				id: '88'
+				id: '733'
 			});
-			
 		}
 
 		message(messages);		
