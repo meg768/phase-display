@@ -5,7 +5,13 @@ module.exports = {
 
 	timezone : 'Europe/Stockholm',
 	
-	
+	matrix: {
+		text: {
+			name: 'Arial',
+			size: 16,
+			color: 'yellow'
+		}
+	},
 	
 	rss: {
 		enabled: true,
