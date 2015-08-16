@@ -24,7 +24,7 @@ module.exports = {
 	matrix: {
 		text: {
 			// The default font used when not specified
-			font  : 'Impact', //'Century Gothic Bold Italic',
+			font  : 'Century Gothic Bold Italic',
 			
 			// ... and size
 			size  : 24,
@@ -33,15 +33,15 @@ module.exports = {
 			color : 'blue',
 			
 			// Default delay when scrolling
-			delay : 15
+			delay : 18
 		},
 		image: {
 			// Default scroll speed
-			delay : 15
+			delay : 18
 		},
 		emoji: {
 			// Default scroll speed
-			delay : 15
+			delay : 18
 		}
 	},
 	
