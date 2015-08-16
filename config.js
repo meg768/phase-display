@@ -7,8 +7,8 @@ module.exports = {
 	
 	matrix: {
 		text: {
-			font : 'Century-Gothic-Bold-Italic',
-			size : 26,
+			font : 'Verdana', //'Century-Gothic-Bold-Italic',
+			size : 20,
 			color: 'yellow'
 		}
 	},
