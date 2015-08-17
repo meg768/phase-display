@@ -35,15 +35,13 @@ function runQuotes(config) {
 			
 			var options = {};
 			extend(options, config.font);
-			options.color = colfig.colors.clock;
+
+			options.color = config.colors.clock;
 			display.text(sprintf('%02d:%02d', now.getHours(), now.getMinutes()), options);
 
 			display.image('images/phiab.png');
 			
 			data.forEach(function(quote) {
-				var options = {};
-				extend(options, config.font);
-				
 				options.color = config.colors.price;
 				display.text(sprintf('%s %.2f SEK', quote.name, quote.price), options);
 	
