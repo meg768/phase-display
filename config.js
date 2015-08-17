@@ -122,7 +122,7 @@ module.exports = {
 		],
 		
 		font : {
-			color: 'green'
+			color: 'rgb(0,255,0)'
 		}
 		
 	},
