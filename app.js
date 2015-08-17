@@ -31,19 +31,21 @@ function runQuotes(config) {
 	
 		quotes.on('quotes', function(data) {
 			var display = new matrix.Display();
-	
+			var now = new Date();
+			
+			var options = {};
+			extend(options, config.font);
+			options.color = colfig.colors.clock;
+			display.text(sprintf('%02d:%02d', now.getHours(), now.getMinutes()), options);
+
+			display.image('images/phiab.png');
+			
 			data.forEach(function(quote) {
 				var options = {};
-				
 				extend(options, config.font);
 				
-				if (quote.logo != undefined)
-					display.image(quote.logo);
-				else
-					display.text(quote.name, options);
-	
 				options.color = config.colors.price;
-				display.text(sprintf('%.2f', quote.price), options);
+				display.text(sprintf('%s %.2f SEK', quote.name, quote.price), options);
 	
 				options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
 				display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)

@@ -67,7 +67,7 @@ module.exports = {
 	},
 	
 	clock: {
-		enabled: true,
+		enabled: false,
 		
 		schedule: {
 			hour   : range(8, 22),
@@ -131,13 +131,13 @@ module.exports = {
 		enabled : true,
 
 		schedule: {
-			hour   : range(8, 17),
+			hour   : range(8, 21),
 			minute : range(0, 59),
 			second : range(10, 59, 20)
 		},
 		
 		quotes : [
-			{ name:'Phase', symbol:'PHI.ST', logo : 'images/phiab-logo.png' }
+			{ name:'Phase', symbol:'PHI.ST'}
 
 		],
 		
@@ -146,6 +146,7 @@ module.exports = {
 		},
 		
 		colors:  {
+			clock   : 'blue',
 			price   : 'white',
 			plus    : 'rgb(0, 255, 0)',
 			minus   : 'rgb(255, 0, 0)',
