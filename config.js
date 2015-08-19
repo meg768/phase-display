@@ -131,7 +131,7 @@ module.exports = {
 		enabled : true,
 
 		schedule: {
-			hour   : range(8, 21),
+			hour   : range(9, 21),
 			minute : range(0, 59),
 			second : range(10, 59, 20)
 		},
