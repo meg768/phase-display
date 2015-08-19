@@ -39,11 +39,11 @@ function runQuotes(config) {
 			options.color = config.colors.clock;
 			display.text(sprintf('%02d:%02d', now.getHours(), now.getMinutes()), options);
 
-			display.image('images/phiab.png');
+			display.image('images/phiab-logo.png');
 			
 			data.forEach(function(quote) {
 				options.color = config.colors.price;
-				display.text(sprintf('%s %.2f SEK', quote.name, quote.price), options);
+				display.text(sprintf('%.2f SEK', quote.price), options);
 	
 				options.color = quote.change >= 0 ? config.colors.plus : config.colors.minus;
 				display.text(sprintf('%s%.1f%%', quote.change >= 0 ? '+' : '', quote.change), options)
