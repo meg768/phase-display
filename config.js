@@ -57,8 +57,8 @@ module.exports = {
 		],
 		
 		schedule: {
-			hour : range(10, 18),
-			minute : 0
+			hour : [10, 12, 14, 16],
+			minute : 30
 		}
 		
 	},

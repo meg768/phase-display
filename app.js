@@ -173,6 +173,27 @@ function runRSS(config) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+function runFika() {
+	var rule = new schedule.RecurrenceRule();
+
+	rule.hour = 15;
+	rule.minute = 0;
+
+	schedule.scheduleJob(rule, function() {
+		var display = new Matrix.Display();
+		
+		display.emoji(48, {hold:1});
+		display.emoji(48, {hold:1});
+		display.emoji(48, {hold:1});
+		
+		display.send();
+	});
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
 function run() {
 	var config = require('./config.js');
 	
@@ -197,6 +218,7 @@ function run() {
 	runMail(config.email);
 	runPing(config.ping);
 	runRSS(config.rss);
+	runFika();
 
 	console.log('Ready!');
 
