@@ -57,11 +57,8 @@ module.exports = {
 		],
 		
 		schedule: {
-			// Display from 8-21
-			hour : range(8, 21),
-
-			// Display RSS news every 20 minutes
-			minute : range(0, 59, 20)
+			hour : range(9, 18),
+			minute : 0
 		}
 		
 	},
@@ -77,11 +74,11 @@ module.exports = {
 	},
 
 	weather: {
-		enabled: true,
+		enabled: false,
 		
 		schedule: {
-			hour   : range(8, 21),
-			minute : range(5, 59, 5)
+			hour   : range(9, 18),
+			minute : 30
 		}
 		
 	},
@@ -100,7 +97,7 @@ module.exports = {
 		enabled  : true,
 		
 		schedule : {
-			hour   : range(8, 21),
+			hour   : range(9, 18),
 			minute : range(0, 59, 15)
 		},
 		
@@ -109,10 +106,10 @@ module.exports = {
 	},
 	
 	rates: {
-		enabled: true,
+		enabled: false,
 		
 		schedule: {
-			hour   : range(8, 21),
+			hour   : range(9, 18),
 			minute : range(0, 59, 10),
 		},
 	
@@ -131,7 +128,7 @@ module.exports = {
 		enabled : true,
 
 		schedule: {
-			hour   : range(9, 21),
+			hour   : range(9, 18),
 			minute : range(0, 59),
 			second : range(10, 59, 20)
 		},
@@ -152,6 +149,6 @@ module.exports = {
 			minus   : 'rgb(255, 0, 0)',
 			volume  : 'rgb(0, 0, 255)'
 		}
-	},
+	}
 };
 
