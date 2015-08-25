@@ -178,11 +178,12 @@ function runRSS(config) {
 function runFika() {
 	var rule = new schedule.RecurrenceRule();
 
-	rule.hour = 15;
-	rule.minute = 0;
+	//rule.hour = 15;
+	//rule.minute = 0;
+	rule.second = 30;
 
 	schedule.scheduleJob(rule, function() {
-		var display = new Matrix.Display();
+		var display = new matrix.Display();
 		
 		display.emoji(48, {hold:1});
 		display.emoji(48, {hold:1});
